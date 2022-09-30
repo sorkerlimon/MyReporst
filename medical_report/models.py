@@ -1,3 +1,4 @@
+from operator import mod
 from django.db import models
 
 # Create your models here.
@@ -23,8 +24,9 @@ class Blood_report(models.Model):
     def __str__(self):
         return f'{str(self.blood_owner)} Blood report'
 
-    
 
+
+### Image Added
 class Imageadd(models.Model):
     image_owner = models.ForeignKey(Profile,null=True,blank=True,on_delete=models.CASCADE)
     name = models.CharField(max_length=255, blank="True")
@@ -34,3 +36,16 @@ class Imageadd(models.Model):
     
     def __str__(self):
         return str(self.name)
+    
+# white blood 
+class Totallcount(models.Model):
+    image_owner = models.ForeignKey(Profile,null=True,blank=True,on_delete=models.CASCADE)
+    wbc = models.FloatField(null=True, blank=True)
+    rbc = models.FloatField(null=True, blank=True)
+    plt = models.FloatField(null=True, blank=True)
+    hbg = models.FloatField(null=True, blank=True)
+    date = models.DateTimeField(default=now)
+    
+    def __str__(self):
+        return f'{str(self.image_owner)} totall count'
+    
