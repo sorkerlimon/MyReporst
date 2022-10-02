@@ -16,30 +16,41 @@ def allimage(request):
     return render(request, "medical_report/allimage.html",context)
 
 
+# Developer Details 
 def developer(request):
     return render(request, "medical_report/developer.html")
 
+
+# Blood Analysis Part
 @login_required(login_url='login')
 def analysis(request):
-    return render(request, "medical_report/blood_analysis.html")
+    return render(request, "blood_medical_report/blood_analysis.html")
 
 
 @login_required(login_url='login')
 def bloodAnalysis(request):
     profile = request.user.profile
     pr = profile.blood_report_set.all()
-    context = {'pr': pr}
-    return render(request, "medical_report/blood_analysis.html",context)
+    pr1 = profile.totallcount_set.all()
+    
+    print(pr1)
+    
+    context = {'pr': pr,'pr1':pr1}
+    return render(request, "blood_medical_report/blood_analysis.html",context)
+
+
+# Urin Analysis Part
 
 @login_required(login_url='login')
 def urinAnalysis(request):
     return render(request, "medical_report/urin_analysis.html")
 
-
+# Add Image Add Part
 @login_required(login_url='login')
 def addImage(request):
-    return render(request, "medical_report/blood_image_add.html")
+    return render(request, "blood_medical_report/blood_image_add.html")
 
+# Blood Image Part
 @login_required(login_url='login')
 def bloodImage(request):
     profile = request.user.profile
@@ -77,8 +88,10 @@ def bloodImage(request):
         
     else:
         form = ImageAddForm()
-    return render(request, "medical_report/blood_image_add.html",{'form':form,'pr': pr})
+    return render(request, "blood_medical_report/blood_image_add.html",{'form':form,'pr': pr})
 
+
+# Urin Image Part
 @login_required(login_url='login')
 def urinImage(request):
     return render(request, "medical_report/urin_image_add.html")
