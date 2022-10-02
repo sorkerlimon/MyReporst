@@ -33,7 +33,7 @@ def bloodAnalysis(request):
     pr = profile.blood_report_set.all()
     pr1 = profile.totallcount_set.all()
     
-    print(pr1)
+    # print(pr1)
     
     context = {'pr': pr,'pr1':pr1}
     return render(request, "blood_medical_report/blood_analysis.html",context)
@@ -55,7 +55,7 @@ def addImage(request):
 def bloodImage(request):
     profile = request.user.profile
     pr = profile.imageadd_set.all()
-    print(pr)
+    # print(pr)
 
     if request.method == 'POST':
         form = ImageAddForm(request.POST , request.FILES)
