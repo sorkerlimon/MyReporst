@@ -23,3 +23,10 @@ class ProfleForm(ModelForm):
     class Meta:
         model = Profile
         fields = ['name','username','email','location','gender','blood','phone_number','dob','profile_image']
+        
+        
+    def __init__(self, *args, **kwargs):
+        super(ProfleForm,self).__init__(*args, **kwargs)
+        
+        for name, field in self.fields.items():
+            field.widget.attrs.update({'class': 'input'})

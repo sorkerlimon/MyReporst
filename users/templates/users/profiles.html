@@ -28,7 +28,7 @@
             <div class="card__body dev">
                 
                 <h2 class="dev__name">Email</h2> 
-                <p class="dev__location"> {{ profile.email }} <a class="tag tag--pill tag--main settings__btn" href=""><i class="im im-edit"></i>
+                <p class="dev__location"> {{ profile.email }} <a class="tag tag--pill tag--main settings__btn" href="{% url 'edit-account' %}"><i class="im im-edit"></i>
                     Edit</a> 
                 </p> 
             </div>
@@ -36,27 +36,27 @@
             <div class="card__body dev">
   
                 <h2 class="dev__name">Gender</h2> 
-                <p class="dev__location"> {{ profile.gender }}<a class="tag tag--pill tag--main settings__btn" href=""><i class="im im-edit"></i>
+                <p class="dev__location"> {{ profile.gender }}<a class="tag tag--pill tag--main settings__btn" href="{% url 'edit-account' %}"><i class="im im-edit"></i>
                     Edit</a> </p> 
             </div>
 
             <div class="card__body dev">
                 <h2 class="dev__name">Blood</h2> 
-                <p class="dev__location"> {{ profile.blood }} <a class="tag tag--pill tag--main settings__btn" href=""><i class="im im-edit"></i>
+                <p class="dev__location"> {{ profile.blood }} <a class="tag tag--pill tag--main settings__btn" href="{% url 'edit-account' %}"><i class="im im-edit"></i>
                     Edit</a> </p> 
             </div>
 
             <div class="card__body dev">
        
                 <h2 class="dev__name">Phone Number</h2> 
-                <p class="dev__location"> {{ profile.phone_number }} <a class="tag tag--pill tag--main settings__btn" href=""><i class="im im-edit"></i>
+                <p class="dev__location"> {{ profile.phone_number }} <a class="tag tag--pill tag--main settings__btn" href="{% url 'edit-account' %}"><i class="im im-edit"></i>
                     Edit</a> </p> 
             </div>
 
             <div class="card__body dev">
 
                 <h2 class="dev__name">Date Of Birth</h2> 
-                <p class="dev__location"> {{ profile.dob }} <a class="tag tag--pill tag--main settings__btn" href=""><i class="im im-edit"></i>
+                <p class="dev__location"> {{ profile.dob }} <a class="tag tag--pill tag--main settings__btn" href="{% url 'edit-account' %}"><i class="im im-edit"></i>
                     Edit</a></p> 
             </div>
 
