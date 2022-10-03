@@ -3,6 +3,26 @@
 
 {% block content  %}
 
+
+<section class="hero-section text-center">
+    <div class="container container--narrow">
+        <div class="hero-section__box">
+            <h2>Search Patient <span>Reports</span></h2>
+        </div>
+
+        <div class="hero-section__search">
+            <form id='searchForm' class="form" action="{% url 'paitent' %}" method="get">
+                <div class="form__field">
+                    <label for="formInput#search">Search By Projects </label>
+                    <input class="input input--text" id="formInput#search" type="text" name="search_query"
+                        placeholder="Search by Patient Name" value="" />
+                </div>
+
+                <input class="btn btn--sub btn--lg" type="submit" value="Search" />
+            </form>
+        </div>
+    </div>
+</section>
  <!-- Table Part Start  -->
 <div class="container">
     <br><br>
@@ -23,7 +43,7 @@
                     <th>RBC ( x 10^12 /L)</th>
                     <th>WBC ( x 10^9 /L)</th>
                     <th>Platelates ( x 10^9 /L)</th>
-                    <td>Show</td>
+                    <td>View</td>
         
                     
                 </tr>
@@ -53,7 +73,7 @@
 
   <!-- Visualizayion Part Start  -->
 
-<div class="iframebox">
+{% comment %} <div class="iframebox"> {% endcomment %}
 
 
     <div class="chartCard">
@@ -65,12 +85,6 @@
             <canvas id="lineChart"></canvas>
         </div>
 
-
-
-    </div>
-
-    <div class="chartCard">
-
         <div class="chartBox">
             <canvas id="pieChart"></canvas>
         </div>
@@ -78,7 +92,14 @@
         <div class="chartBox">
             <canvas id="pieChart1"></canvas>
         </div>
+
+
     </div>
+
+    {% comment %} <div class="chartCard">
+
+  
+    </div> {% endcomment %}
 
 
 
@@ -111,7 +132,7 @@
                     'rgba(153, 102, 255, 1)',
                     'rgba(255, 159, 64, 1)'
                 ],
-                borderWidth: 1
+                borderWidth: 3
             }] 
         };
 
@@ -166,7 +187,7 @@
                     'rgba(153, 102, 255, 1)',
                     'rgba(255, 159, 64, 1)'
                 ],
-                borderWidth: 1
+                borderWidth: 3
             }] 
         };
 
@@ -216,7 +237,7 @@
                         'rgba(153, 102, 255, 1)',
                         'rgba(255, 159, 64, 1)'
                     ],
-                    borderWidth: 1
+                    borderWidth: 3
                 }] 
             };
 
@@ -267,7 +288,7 @@
                 'rgba(153, 102, 255, 1)',
                 'rgba(255, 159, 64, 1)'
             ],
-            borderWidth: 1
+            borderWidth: 3
         }] 
         };
 
@@ -299,7 +320,7 @@
     </script>
 
 
-</div>
+{% comment %} </div> {% endcomment %}
   <!-- Visualizayion Part End  -->
 
 

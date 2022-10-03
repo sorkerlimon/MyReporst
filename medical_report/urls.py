@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import developer,analysis,addImage,bloodAnalysis,urinAnalysis,bloodImage,urinImage,allimage
+from .views import developer,analysis,addImage,bloodAnalysis,urinAnalysis,bloodImage,urinImage,allimage,paitent
 
 
 urlpatterns = [
@@ -11,5 +11,6 @@ urlpatterns = [
     path('bloodImage/',bloodImage,name='bloodImage'),
     path('urinImage/',urinImage,name='urinImage'),
     path('allimage/',allimage,name='gallery'),
+    path('paitent/',paitent,name='paitent'),
 
 ]

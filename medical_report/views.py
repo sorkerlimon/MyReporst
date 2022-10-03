@@ -1,6 +1,10 @@
 from tkinter import W
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
+from matplotlib.style import context
+
+from users.models import Profile
+from users.views import profile
 from .models import Blood_report,Totallcount
 from .forms import ImageAddForm
 from .ex import Detect_Text,all_text,specific_text_wbc,specific_text_rbc,specific_text_plt,specific_text_hbg
@@ -62,23 +66,55 @@ def bloodImage(request):
         if form.is_valid():
             image_file = form.cleaned_data['image']
             
+            # handle exception 
+            wbc = []
+            rbc = []
+            plt = []
+            hbg = []
+            
+            
             de = Detect_Text(image_file)
             al = all_text(de)
             
             wbc = specific_text_wbc(al)
+            if wbc is None:
+                print('Data not saved..')
+                wbc = 0
+            else:
+                wbc = wbc
+                    
+
 
             rbc = specific_text_rbc(al)
+            if rbc is None:
+                print('Data not saved..')
+                rbc = 0
+            else:
+                rbc = rbc
+                    
 
             plt = specific_text_plt(al)
+            if plt is None:
+                print('Data not saved..')
+                plt = 0
+            else:
+                plt = plt
+                    
+
 
             hbg = specific_text_hbg(al)
-
-            # profile = request.user.profile
+            if hbg is None:
+                print('Data not saved..')
+                hbg = 0
+            else:
+                hbg = hbg
+                    
+            
             obj = Totallcount(wbc=wbc,rbc=rbc,plt=plt,hbg=hbg)
             obj.image_owner = request.user.profile
             obj.save()
             
-              
+            # Only Image will save below this code 
             instance = form.save(commit=False)
             instance.image_owner = request.user.profile
             instance.save()
@@ -95,4 +131,19 @@ def bloodImage(request):
 @login_required(login_url='login')
 def urinImage(request):
     return render(request, "medical_report/urin_image_add.html")
+
+# Patient find
+@login_required(login_url='login')
+def paitent(request):
+    search_query = ''
+    
+    if request.GET.get('search_query'):
+        search_query = request.GET.get('search_query')
+        profiles = Profile.objects.filter(name__icontains=search_query)
+    print("Search : ",search_query)
+    context = {
+       'profiles':profiles
+    }
+    return render(request, "medical_report/paitent.html",context)
+
 
