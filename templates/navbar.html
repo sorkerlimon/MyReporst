@@ -23,8 +23,8 @@
                 {% if request.user.is_authenticated %}
                 <li class="header__menuItem"><a href="{% url 'bloodAnalysis' %}" class="btn btn--sub">Analysis</a></li>
                 <li class="header__menuItem"><a href="{% url 'bloodImage' %}" class="btn btn--sub">Upload</a></li>
-                <li class="header__menuItem"><a href="{% url 'profile' %}" class="btn btn--sub">Profile</a></li>
                 <li class="header__menuItem"><a href="{% url 'gallery' %}" class="btn btn--sub">Gallery </a></li>
+                <li class="header__menuItem"><a href="{% url 'profile' %}" class="btn btn--sub">Account</a></li>
                 <li class="header__menuItem"><a href="{% url 'logout' %}" class="btn btn--sub">logout</a></li>
                 {% else %}
                 <li class="header__menuItem"><a href="{% url 'login' %}" class="btn btn--sub">Login/Sign Up</a></li>
