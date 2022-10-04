@@ -138,11 +138,19 @@ def paitent(request):
     search_query = ''
     
     if request.GET.get('search_query'):
+        
+        
         search_query = request.GET.get('search_query')
-        profiles = Profile.objects.filter(name__icontains=search_query)
-    print("Search : ",search_query)
+        # profileData =  Profile.objects.filter(id=search_query)
+        userprofile = Profile.objects.filter(id=search_query)
+        # profiles = Totallcount.objects.filter(image_owner="00877c6b-772b-4d8f-b95f-4c415c0ddcc5")
+        profiles =  Totallcount.objects.filter(image_owner=search_query)
+        
+
     context = {
-       'profiles':profiles
+       'profiles':profiles,
+       'userprofile':userprofile,
+     
     }
     return render(request, "medical_report/paitent.html",context)
 

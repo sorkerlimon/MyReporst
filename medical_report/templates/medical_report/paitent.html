@@ -3,9 +3,309 @@
 
 {% block content  %}
 
+<div class="container">
 
-<h1>Patient find working in progress.......</h>
+    <h2>Profile Data</h2>
+    <h3> Name : {% for p in userprofile %} {{ p.name }} {% endfor %}  </h3>
+    <h3> Blood Group : {% for p in userprofile %} {{ p.blood }} {% endfor %}  </h3>
+    <h3> Gender : {% for p in userprofile %} {{ p.gender }} {% endfor %}  </h3>
+    <h3>Date of Birth : {% for p in userprofile %} {{ p.dob }} {% endfor %}  </h3>
+    
 
-    {{ profiles }}
+</div>
+
+
+ <!-- Table Part Start  -->
+<div class="container">
+        <div style="overflow-x:auto;">
+            <h3>Total count ( HBG, RBC, WBC, PLT )</h3>
+            <table class="content-table">
+                <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Hemoglobin (/L)</th>
+                    <th>RBC ( x 10^12 /L)</th>
+                    <th>WBC ( x 10^9 /L)</th>
+                    <th>Platelates ( x 10^9 /L)</th>
+                    <td>View</td>
+        
+                    
+                </tr>
+                </thead>
+                <tbody >
+                
+                    {% for p in profiles %}
+                    <tr class="active-row">
+                        
+                        <td>{{  p.date }}</td>
+                        <td>{{  p.hbg }}</td>
+                        <td>{{  p.rbc }}</td>
+                        <td>{{  p.wbc }}</td>
+                        <td>{{  p.plt }}</td>
+                        <td>Show</td>
+                    
+                        
+                    </tr>
+                    {% endfor %}    
+                </tbody>
+            </table>
+            
+        </div>
+
+    </div>
+ <!-- Table Part End  -->
+
+  <!-- Visualizayion Part Start  -->
+
+{% comment %} <div class="iframebox"> {% endcomment %}
+
+
+    {% comment %} <div class="chartCard">
+
+        <div class="chartBox">
+            <canvas id="myChart"></canvas>
+        </div>
+        <div class="chartBox">
+            <canvas id="lineChart"></canvas>
+        </div>
+
+        <div class="chartBox">
+            <canvas id="pieChart"></canvas>
+        </div>
+
+        <div class="chartBox">
+            <canvas id="pieChart1"></canvas>
+        </div>
+
+
+    </div>
+
+    {% comment %} <div class="chartCard">
+
+  
+    </div> {% endcomment %}
+
+
+{% comment %} 
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <script>
+
+        // Hemuglobin data file
+        const data = {
+
+            labels: [{% for p in pr1  %} '{{ p.date }}', {% endfor %}],
+            datasets: [{
+                label: 'Hemoglobin',
+                data: [{% for p in pr1  %} {{ p.hbg }}, {% endfor %}],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 3
+            }] 
+        };
+
+
+
+        // Config bar chart
+        const config = {
+
+            type: 'line',
+                data,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+
+        };
+        //Render init Block
+
+        const myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
+
+
+
+
+
+        //Red Blood Cell  Chart config
+
+        const rbc = {
+
+            labels: [{% for p in pr1  %} '{{ p.date }}', {% endfor %}],
+            datasets: [{
+                label: 'Red Blood Cell',
+                data: [{% for p in pr1  %} {{ p.rbc }}, {% endfor %}],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 3
+            }] 
+        };
+
+
+        const config2 = {
+
+            type: 'line',
+                data: rbc,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+
+            };
+
+        const lineChart = new Chart(
+            document.getElementById('lineChart'),
+            config2
+        );
+
+
+        // White blood cell 
+
+
+        const da = {
+
+                labels: [{% for p in pr1  %} '{{ p.date }}', {% endfor %}],
+                datasets: [{
+                    label: 'White Blood Cell ( x 10^9 /L )',
+                    data: [{% for p in pr1  %} {{ p.wbc }}, {% endfor %}],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 3
+                }] 
+            };
+
+
+        const config4 = {
+
+            type: 'line',
+                data: da,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+
+            };
+
+            const pieChart = new Chart(
+            document.getElementById('pieChart'),
+            config4
+            );
+
+
+
+    // Platelates chart  chart
+
+
+    const da1 = {
+
+        labels: [{% for p in pr1  %} '{{ p.date }}', {% endfor %}],
+        datasets: [{
+            label: 'Platelates',
+            data: [{% for p in pr1  %} {{ p.plt }}, {% endfor %}],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 3
+        }] 
+        };
+
+
+        const config5 = {
+
+        type: 'bar',
+        data: da1,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+
+        };
+
+        const pieChart1 = new Chart(
+        document.getElementById('pieChart1'),
+        config5
+        );
+
+
+
+
+
+
+    </script>  {% endcomment %}
+
+
+{% comment %} </div> {% endcomment %}
+  <!-- Visualizayion Part End  -->
+
 
 {% endblock  %}
