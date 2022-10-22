@@ -17,17 +17,16 @@
 
 
       <h4>Gallery</h4>
-      {% for p in hba1c_lists %}
-      <a target="_blank" href="{{ p.image.url }}">
+     {% for i in hba1c_list  %}
+     <a target="_blank" href="{{ i.image.url }}">
       <div class="gallery" align='center'>
           
-          <img src="{{ p.image.url }}" alt="Cinque Terre" style="width: 90px; height: 120px;" >
+          <img src="{{ i.image.url }}" alt="Cinque Terre" style="width: 90px; height: 120px;" >
           
-          <div class="desc">{{ p.testdate|slice:10 }}</div>
+          <div class="desc">{{ i.testdate|slice:10 }}</div>
       </div>
     </a>
-      
-      {% endfor %}
+     {% endfor %}
 
 
      </section>

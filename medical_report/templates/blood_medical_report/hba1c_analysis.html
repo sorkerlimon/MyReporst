@@ -8,8 +8,8 @@
         <nav>
            <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
-              <li class="breadcrumb-item active"><a href="{% url 'esr_' %}">ESR</a></li>
-              <li class="breadcrumb-item active">ESR Visualization</li>
+              <li class="breadcrumb-item active"><a href="{% url 'hba1c_' %}">HBA1C</a></li>
+              <li class="breadcrumb-item active">HBA1C Visualization</li>
 
            </ol>
         </nav>
@@ -23,7 +23,7 @@
           <div class="card h-100">
             <div class="card-header">
                 <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
-                esr blood cell
+                HBA1C blood cell
             </div>
    
             <div class="card-body esr" >
@@ -35,10 +35,10 @@
         
                 const esr = {
         
-                    labels: [{% for p in pr1  %} {% if p.esr > 0 %} '{{ p.date }}',{%endif%} {% endfor %}],
+                    labels: [{% for p in pr1  %} {% if p.hba1c > 0 %} '{{ p.date }}',{%endif%} {% endfor %}],
                     datasets: [{
-                        label: 'esr Blood Cell ( x 10^12 /L)',
-                        data: [{% for p in pr1  %} {% if p.esr > 0 %} {{ p.esr }},{% endif %} {% endfor %}],
+                        label: 'hba1c Blood Cell ( x 10^12 /L)',
+                        data: [{% for p in pr1  %} {% if p.hba1c > 0 %} {{ p.hba1c }},{% endif %} {% endfor %}],
                         backgroundColor: [
                             'rgba(75, 192, 192, 0.2)',
                             'rgba(255, 99, 132, 0.2)',

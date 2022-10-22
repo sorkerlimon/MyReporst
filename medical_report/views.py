@@ -179,12 +179,34 @@ def esr_analysis(request,pk):
 def hba1c_(request):
     profile = request.user.profile
     pr1 = profile.imageadd_set.all()
-    hba1c_list = Imageadd.objects.filter(image_owner = request.user.profile ,imagetype__image_type='ESR')
+    hba1c_list = Imageadd.objects.filter(image_owner = request.user.profile ,imagetype__image_type='hba1c')
     
-
+        
+    data = []
+    ref_val_highest  = 7.0
+    ref_val_lowest  = 6.0
+    date_ = []
     
-    context = {'pr1':pr1,'hba1c_list':hba1c_list}
+    check_values = request.POST.getlist('tag')
+    check_values1 = request.POST.get('valu1')
+    if not check_values:
+        pass
+    else:
+        for i in check_values:
+            prof =  Imageadd.objects.get(image_id=i)
+            pr1 = prof.hba1c_set.all()
+            for p in pr1:
+                if check_values1 == 'hba1c':
+                    data.append(p.hba1c)
+                    date_.append(prof.testdate)  
+            else:
+                pass
+    
+    context = {'pr1':pr1,'hba1c_list':hba1c_list,'date_':date_,'check_values1':check_values1,'data':data,'ref_val_highest':ref_val_highest,'ref_val_lowest':ref_val_lowest}
     return render(request, "blood_medical_report/hba1c.html",context)
+
+
+
 
 
 
@@ -193,7 +215,7 @@ def hba1c_analysis(request,pk):
 
         
     prof =  Imageadd.objects.get(image_id=pk)
-    pr1 = prof.esrcount_set.all()
+    pr1 = prof.hba1c_set.all()
 
 
     
@@ -463,6 +485,24 @@ def bloodImage(request):
                         obj.imageid= instance
                         obj.save()
                         esr_count = True
+                        
+                    
+                    hba1c = []
+                    
+                    if value.get("hba1c") == None:
+                        hba1c = 0
+                    else:
+                        hba1c = value["hba1c"]
+                    
+                    hba1c_count = False
+                    # print(value)
+                    if hba1c != 0:
+                        # print(esr)
+                        obj = Hba1c( hba1c=hba1c )
+                        obj.image_owner = request.user.profile
+                        obj.imageid= instance
+                        obj.save()
+                        hba1c_count = True
                     
                     # Only Image will save below this code 
 
@@ -479,6 +519,13 @@ def bloodImage(request):
                         # messages.success(request,'Image Upload Successfully')
                     if esr_count:
                         x = 'ESR'
+                        obj = Imagetype(image_type=x)
+                        obj.image_owner = request.user.profile
+                        obj.imageid= instance
+                        obj.save()
+                        # messages.success(request,'Image Upload Successfully')
+                    if hba1c_count:
+                        x = 'hba1c'
                         obj = Imagetype(image_type=x)
                         obj.image_owner = request.user.profile
                         obj.imageid= instance
@@ -572,8 +619,7 @@ def esrimage(request):
 def hba1c(request):
     profile = request.user.profile
     pr1 = profile.imageadd_set.all()
-    hba1c_list = Imageadd.objects.filter(image_owner = request.user.profile ,imagetype__image_type='ESR')
-    
+    hba1c_list = Imageadd.objects.filter(image_owner = request.user.profile ,imagetype__image_type='hba1c')
     
     context = {'pr1':pr1,'hba1c_list':hba1c_list,'profile': profile}
     return render(request, "blood_medical_report/hba1c_image_gallery.html",context)

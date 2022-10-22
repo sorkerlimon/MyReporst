@@ -68,21 +68,21 @@
                      <div class="card recent-sales overflow-auto">
                                    
                         <div class="card-body">
-                           <h5 class="card-title" style= "text-align: center";>Comparision Table Erythrocyte Sedimentation Rate (ESR) </h5>
+                           <h5 class="card-title" style= "text-align: center";>Glycated hemoglobin ( HBA1C )</h5>
                         </div>
                  
-                        <div class="card-body rbc">
-                        <canvas id="esrChart"></canvas>
+                        <div class="card-body hba1c">
+                        <canvas id="hba1cChart"></canvas>
                         </div>
                         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
                         <script>
-                        //Red Blood Cell  Chart config
+                        //hba1c Cell  Chart config
                                
-                        const esr = {
+                        const hba1c = {
                                
                            labels: [{% for p in date_  %}  '{{ p|date:"Y/m/d" }}',{% endfor %}],
                                  datasets: [{
-                                    label: 'Comparision Graph {{ check_values1 }} RF: Male (1–13), Female (1–20) mm/hr',
+                                    label: 'Comparision Graph {{ check_values1 }} RF: < 6.0 Normal < 7.0 Good Control',
                                        data: [{% for p in data  %}  {{ p }}, {% endfor %}],
                                                backgroundColor: [
                                                    'rgba(75, 192, 192, 0.2)',
@@ -105,8 +105,8 @@
                                        };
                        
                                          // doubleArbitraryLine Plugin
-                                           const esrredDoubleArbitraryLine = {
-                                               id: 'esrredDoubleArbitraryLine',
+                                           const hba1credDoubleArbitraryLine = {
+                                               id: 'hba1credDoubleArbitraryLine',
                                                beforeDraw(chart, args, options) {
                                                    const { ctx, chartArea: { top, right, bottom, left, width, height },
                                                    scales: { x,y } } = chart;
@@ -125,10 +125,10 @@
                                            }
                                
                                
-                                       const esrconfig = {
+                                       const hba1cconfig = {
                                
                                            type: 'bar',
-                                               data: esr,
+                                               data: hba1c,
                                                options: {
                                                    scales: {
                                                        y: {
@@ -136,13 +136,13 @@
                                                        }
                                                    }
                                                },     
-                                               plugins: [esrredDoubleArbitraryLine]
+                                               plugins: [hba1credDoubleArbitraryLine]
                                            };
                        
                                
-                                       const esrChart = new Chart(
-                                           document.getElementById('esrChart'),
-                                           esrconfig
+                                       const hba1cChart = new Chart(
+                                           document.getElementById('hba1cChart'),
+                                           hba1cconfig
                                        );
                                    </script>
                                  </div>

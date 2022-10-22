@@ -630,7 +630,7 @@ def specific_text(raw_text):
                 if "%" in hba1c_string:
                     hba1c_prob_val = re.findall('[-+]?\d*\.\d+|\d+', hba1c_string)
                     if len(hba1c_prob_val) > 0:
-                        hba1c_val = float(hba1c_prob_val[0])
+                        hba1c_val = float(hba1c_prob_val[1])
                         hba1c_found = True
                         hba1c_si_val = hba1c_val
                         parameter["hba1c"] = hba1c_si_val
