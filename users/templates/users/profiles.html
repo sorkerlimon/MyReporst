@@ -4,74 +4,101 @@
 {% block content %}
 
 <!-- Main Section -->
-<main class="settingsPage profile my-md">
-    <div class="container">
-      <div class="layout">
-        <div class="column column--1of3">
-          <div class="card text-center">
+<main id="main" class="main">
+  <div class="pagetitle">
 
-            <div class="card__body dev">
-              <a class="tag tag--pill tag--main settings__btn" href="{% url 'edit-account' %}"><i class="im im-edit"></i>
-                Edit</a>
-              <img class="avatar avatar--xl dev__avatar" src="{{ profile.profile_image.url }}" />
-              <h2 class="dev__name">{{ profile.name }}</h2> 
-              <p class="dev__location">Location : {{ profile.location }}</p> 
-            </div>
+     <h1>Profile</h1>
+     
 
-          </div>
+     <nav>
+        <ol class="breadcrumb">
+           <li class="breadcrumb-item"><a href="">Home</a></li>
+           <li class="breadcrumb-item">Users</li>
+           <li class="breadcrumb-item active">Profile</li>
+        </ol>
+     </nav>
+  </div>
+  <section class="section profile">
+     <div class="row">
+        <div class="col-xl-4">
+           <div class="card">
+              <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                 <img src="{{ profile.profile_image.url }}" alt="Profile" >
+                 <h2>{{ profile.name }}</h2>
+              </div>             
+           </div>
+           <div class="card">
+            <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                  {{profile.ref_code}}
+                  <br><br>
+                  <form method="POST" action="{% url 'profile' %}">
+                     {% csrf_token %}
+                     <div align='center'>Generate A New Code <input type="checkbox"  name="tag" value={{ profile.id }} /></div><br>
+                     <div align='center'><button type="submit" class="btn btn-info">Submit</button></div>
+                     
+                  </form>
+            </div>             
+         </div>
+           
         </div>
+        <div class="col-xl-8">
+           <div class="card">
+              <div class="card-body pt-3">
+                 <ul class="nav nav-tabs nav-tabs-bordered">
+                    <li class="nav-item"> <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Overview</button></li>
+                    {% comment %} <li class="nav-item"> <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-edit">Edit Profile</button></li>
+                    <li class="nav-item"> <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-settings">Settings</button></li>
+                    <li class="nav-item"> <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password">Change Password</button></li> {% endcomment %}
+                 </ul>
+                 <div class="tab-content pt-2">
+                    <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                       <h5 class="card-title">Profile Details</h5>
+                       <div class="row">
+                          <div class="col-lg-3 col-md-4 label ">Full Name</div>
+                          <div class="col-lg-9 col-md-8">{{ profile.name }}</div>
+                       </div>
 
+                       <div class="row">
+                          <div class="col-lg-3 col-md-4 label">Email</div>
+                          <div class="col-lg-9 col-md-8">{{ profile.email }}</div>
+                       </div>
+                       <div class="row">
+                          <div class="col-lg-3 col-md-4 label">Phone</div>
+                          <div class="col-lg-9 col-md-8">(+88) {{ profile.phone_number }}</div>
+                       </div>
+                       <div class="row">
+                          <div class="col-lg-3 col-md-4 label">Gender</div>
+                          <div class="col-lg-9 col-md-8">{{ profile.gender }}</div>
+                       </div>
+                       <div class="row">
+                          <div class="col-lg-3 col-md-4 label">Address</div>
+                          <div class="col-lg-9 col-md-8">{{ profile.location }}</div>
+                       </div>
+                       <div class="row">
+                          <div class="col-lg-3 col-md-4 label">Blood</div>
+                          <div class="col-lg-9 col-md-8">{{ profile.blood }}</div>
+                       </div>
+                       <div class="row">
+                          <div class="col-lg-3 col-md-4 label">Date of Birth</div>
+                          <div class="col-lg-9 col-md-8">{{ profile.dob }}</div>
+                       </div>
+                       <div class="row">
+                        <div class="col-lg-3 col-md-4 label ">Share ID</div>
+                        <div class="col-lg-9 col-md-8">{{ profile.ref_code }}</div>
+                     </div>
+                       <div class="row">
+                     
+                        <br><br>
+                        <a class="btn btn-info " target="" href="{% url 'edit-account' %}">Edit</a>
+                     </div>
+                    </div>
 
-
-        <div class="column column--2of3">
-
-          <div class="card__body dev">
-
-            <h2 class="dev__name">ID</h2> 
-            <p class="dev__location"> {{ profile.id }} <a class="tag tag--pill tag--main settings__btn" href="">
-          </div>
-
-            <div class="card__body dev">
-                
-                <h2 class="dev__name">Email</h2> 
-                <p class="dev__location"> {{ profile.email }} <a class="tag tag--pill tag--main settings__btn" href="{% url 'edit-account' %}"><i class="im im-edit"></i>
-                    Edit</a> 
-                </p> 
-            </div>
-
-            <div class="card__body dev">
-  
-                <h2 class="dev__name">Gender</h2> 
-                <p class="dev__location"> {{ profile.gender }}<a class="tag tag--pill tag--main settings__btn" href="{% url 'edit-account' %}"><i class="im im-edit"></i>
-                    Edit</a> </p> 
-            </div>
-
-            <div class="card__body dev">
-                <h2 class="dev__name">Blood</h2> 
-                <p class="dev__location"> {{ profile.blood }} <a class="tag tag--pill tag--main settings__btn" href="{% url 'edit-account' %}"><i class="im im-edit"></i>
-                    Edit</a> </p> 
-            </div>
-
-            <div class="card__body dev">
-       
-                <h2 class="dev__name">Phone Number</h2> 
-                <p class="dev__location"> {{ profile.phone_number }} <a class="tag tag--pill tag--main settings__btn" href="{% url 'edit-account' %}"><i class="im im-edit"></i>
-                    Edit</a> </p> 
-            </div>
-
-            <div class="card__body dev">
-
-                <h2 class="dev__name">Date Of Birth</h2> 
-                <p class="dev__location"> {{ profile.dob }} <a class="tag tag--pill tag--main settings__btn" href="{% url 'edit-account' %}"><i class="im im-edit"></i>
-                    Edit</a></p> 
-            </div>
-
-
-
-        </div> 
-      </div>
-    </div>
-  </main>
-
+                 </div>
+              </div>
+           </div>
+        </div>
+     </div>
+  </section>
+</main>
 
 {% endblock  %}

@@ -3,23 +3,95 @@
 
 {% block content  %}
 
+<main id="main" class="main">
+    <div class="pagetitle">
+      
+       <h1>Profile</h1>
+       <nav>
+          <ol class="breadcrumb">
+             <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+             <li class="breadcrumb-item"><a href="{% url 'profile' %}">Users</a></li>
+             <li class="breadcrumb-item active">Paitent Profile</li>
+          </ol>
+       </nav>
+    </div>
+
+
+    <section class="section profile">
+        <div class="row">
+           <div class="col-xl-4">
+              <div class="card">
+                 <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
+                    <img src="{{ profile.profile_image.url }}" alt="Profile" >
+                    <h2>{{ profile.name }}</h2>
+                 </div>             
+              </div>   
+            </div>
+           <div class="col-xl-8">
+              <div class="card">
+                 <div class="card-body pt-3">
+                    <div class="tab-content pt-2">
+                       <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                          <h5 class="card-title">Profile Details</h5>
+                          <div class="row">
+                             <div class="col-lg-3 col-md-4 label">Gender</div>
+                             <div class="col-lg-9 col-md-8">{{ profile.gender }}</div>
+                          </div>
+
+                          <div class="row">
+                             <div class="col-lg-3 col-md-4 label">Blood</div>
+                             <div class="col-lg-9 col-md-8">{{ profile.blood }}</div>
+                          </div>
+                          <div class="row">
+                             <div class="col-lg-3 col-md-4 label">Date of Birth</div>
+                             <div class="col-lg-9 col-md-8">{{ profile.dob }}</div>
+                          </div>
+                        </div>
+                       </div>
+   
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </div>
+     </section>
+
+
+
+
+
+
+
+
+    <section class="section profile">
 <div class="container">
 
-    <h2>Profile Data</h2>
-    <h3> Name : {% for p in userprofile %} {{ p.name }} {% endfor %}  </h3>
-    <h3> Blood Group : {% for p in userprofile %} {{ p.blood }} {% endfor %}  </h3>
-    <h3> Gender : {% for p in userprofile %} {{ p.gender }} {% endfor %}  </h3>
-    <h3>Date of Birth : {% for p in userprofile %} {{ p.dob }} {% endfor %}  </h3>
-    
+    <div class="flip-card">
+        <div class="flip-card-inner">
+            {{userprofile.name}}
+            {{userprofile.gender}}
+            {{userprofile.blood}}
+            {{userprofile.email}}
 
+        {% comment %} <div class="flip-card-front">
+            <img src="{% for p in userprofile %} {{ p.profile_image.url }} {% endfor %} " alt="Avatar" style="width:300px;height:300px;">
+        </div> {% endcomment %}
+        {% comment %} <div class="flip-card-back">
+            <br><br><br>
+            <h6> Name : {% for p in userprofile %} {{ p.name }} {% endfor %}</h1> 
+            <h6> Blood : {% for p in userprofile %} {{ p.blood }} {% endfor %}  </h3>
+            <h6> Gender :{% for p in userprofile %} {{ p.gender }} {% endfor %}  </h3>
+            <h6> DoB :{% for p in userprofile %} {{ p.dob }} {% endfor %}  </h3>
+        </div> {% endcomment %}
+        </div>
+    </div>
 </div>
-
 
  <!-- Table Part Start  -->
 <div class="container">
         <div style="overflow-x:auto;">
             <h3>Total count ( HBG, RBC, WBC, PLT )</h3>
-            <table class="content-table">
+            {% comment %} <table class="content-table">
                 <thead>
                 <tr>
                     <th>Date</th>
@@ -48,11 +120,16 @@
                     </tr>
                     {% endfor %}    
                 </tbody>
-            </table>
+            </table> {% endcomment %}
             
         </div>
 
     </div>
+
+</section>
+
+
+
  <!-- Table Part End  -->
 
   <!-- Visualizayion Part Start  -->
@@ -307,5 +384,6 @@
 {% comment %} </div> {% endcomment %}
   <!-- Visualizayion Part End  -->
 
+</main>
 
 {% endblock  %}

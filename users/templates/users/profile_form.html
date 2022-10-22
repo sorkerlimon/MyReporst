@@ -2,38 +2,39 @@
 
 {% block content %}
 
-
-
-{% comment %} <form method="POST" action="{% url 'edit-account' %}" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{form.as_p}}
-    <input type="submit" value="Submit" />
-</form> {% endcomment %}
-
-
  <!-- Main Section -->
- <main class="formPage my-xl">
-    <div class="content-box">
-        <div class="formWrapper">
-            <a class="backButton" href="{% url 'profile' %}"><i class="im im-angle-left"></i></a>
-            <br>
 
+ <main id="main" class="main">
+    
+    <div class="pagetitle">
+       <h1>Profile</h1>
+       <nav>
+          <ol class="breadcrumb">
+             <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+             <li class="breadcrumb-item"><a href="{% url 'profile' %}">User</a></li>
+             <li class="breadcrumb-item active">Edit Profile</li>
+          </ol>
+       </nav>
+    </div>
+    <section class="section profile">
+        <div class="container">
             <form class="form" method="POST" action="{% url 'edit-account' %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% for field in form %}
                     <!-- Input:Text -->
-                    <div class="form__field">
-                        <label for="formInput#text">{{field.label}} </label>
-                        {{field}}
+                    <div class="profile-edit pt-3">
+                        <div class="col-md-5 ">
+                            <label for="formInput#text">{{field.label}} </label>
+                            {{field}}
+                        </div>
                     </div>
                 {% endfor %}
-                
-
-                
-                <input class="btn btn--sub btn--lg  my-md" type="submit" value="Submit" />
+                <div class=""> <input type="submit" class="btn btn-primary " value="Submit" /></div>
             </form>
         </div>
     </div>
+    </section>
+
 </main>
 
 {% endblock  %}

@@ -33,6 +33,7 @@ class Profile(models.Model):
     id = models.UUIDField(default=uuid.uuid4, unique=True,primary_key=True, editable=False)
     dob = models.DateField(max_length=8,blank=True,null=True)
     phone_number = PhoneNumberField(blank=True,null=True)
+    ref_code = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return f'Profile of {str(self.id)}'

@@ -1,0 +1,88 @@
+{% load static %}
+{% load notifications_tags %}
+<header id="header" class="header fixed-top d-flex align-items-center">
+  <div class="d-flex align-items-center justify-content-between"> <a href="{% url 'dashboard' %}" class="logo d-flex align-items-center"> <img src=" {% static 'assets/img/myreports.png' %} " alt=""> <span class="d-none d-lg-block">MyReports</span> </a> <i class="bi bi-list toggle-sidebar-btn"></i></div>
+  <div class="search-bar">
+     <form class="search-form d-flex align-items-center" id='searchForm' action="{% url 'paitent' %}" method="get"> <input type="search" name="search_query" placeholder="Search By ID" title="Enter search keyword"> <button type="submit" title="Search"><i class="bi bi-search"></i></button></form>
+  </div>
+  <nav class="header-nav ms-auto">
+     <ul class="d-flex align-items-center">
+        <li class="nav-item d-block d-lg-none"> <a class="nav-link nav-icon search-bar-toggle " href="#"> <i class="bi bi-search"></i> </a></li>
+        
+   
+         <li class="nav-item dropdown">
+            
+            {% notifications_unread as unread_count %}
+            {% if unread_count %}
+            {% register_notify_callbacks callbacks='fill_notification_list,fill_notification_badge' %}
+            <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown"> <i class="bi bi-bell"></i> <span class="badge bg-primary badge-number">{{ unread_count }}</span> </a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+               <li class="dropdown-header"> {% live_notify_list %} {% for i in user.notifications.unread  %} {{i}} <br> {% endfor %} <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2"></span></a></li>
+               
+            </ul>
+            {% endif %} 
+
+         </li>
+
+
+        
+
+        <li class="nav-item dropdown pe-3">
+           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown"> <img src=" {% static 'assets/img/profile-img.jpg' %} " alt="Profile" class="rounded-circle"> <span class="d-none d-md-block dropdown-toggle ps-2">{{ profile.name }}</span> </a>
+           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+              <li class="dropdown-header">
+                 <h6>{{ profile.name }}</h6>
+                 
+              </li>
+              <li>
+                 <hr class="dropdown-divider">
+              </li>
+              <li> <a class="dropdown-item d-flex align-items-center" href="{% url 'profile' %}"> <i class="bi bi-person"></i> <span>My Profile</span> </a></li>
+              <li> <a class="dropdown-item d-flex align-items-center" href="{% url 'logout' %}"> <i class="bi bi-box-arrow-in-left"></i> <span>Logout</span> </a></li>
+           </ul>
+        </li>
+     </ul>
+  </nav>
+
+
+</header>
+
+
+
+<aside id="sidebar" class="sidebar">
+  <ul class="sidebar-nav" id="sidebar-nav">
+   {% if request.user.is_authenticated %}
+     <li class="nav-item"> <a class="nav-link " href="{% url 'dashboard' %}"> <i class="bi bi-grid"></i> <span>Dashboard</span> </a></li>
+     <li class="nav-item"> <a class="nav-link " href="{% url 'bloodImage' %}"> <i class="bi bi-cloud-arrow-up"></i> <span>Upload</span> </a></li>
+   
+
+
+     <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#"> <i class="bi bi-bar-chart"></i><span>View Reports</span><i class="bi bi-chevron-down ms-auto"></i> </a>
+        <ul id="charts-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+           <li> <a href="{% url 'cbc_' %}"> <i class="bi bi-circle"></i><span>CBC</span> </a></li>
+           <li> <a href="{% url 'esr_' %}"> <i class="bi bi-circle"></i><span>ESR</span> </a></li>
+           <li> <a href="{% url 'hba1c_' %}"> <i class="bi bi-circle"></i><span>HBA1C</span> </a></li>
+        </ul>
+     </li>
+
+     <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#"> <i class="bi bi-images"></i><span>Gallery</span><i class="bi bi-chevron-down ms-auto"></i> </a>
+      <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+         <li> <a href="{% url 'cbcimage' %}"> <i class="bi bi-circle"></i><span>CBC</span> </a></li>
+         <li> <a href="{% url 'esrimage' %}"> <i class="bi bi-circle"></i><span>ESR</span> </a></li>
+         <li> <a href="{% url 'hba1c' %}"> <i class="bi bi-circle"></i><span>HBA1C</span> </a></li>
+      </ul>
+     </li>
+
+     <li class="nav-heading">Pages</li>
+     <li class="nav-item"> <a class="nav-link collapsed" href="{% url 'profile' %}"> <i class="bi bi-person"></i> <span>Profile</span> </a></li>
+     <li class="nav-item"> <a class="nav-link collapsed" href="{% url 'faq' %}"> <i class="bi bi-question-circle"></i> <span>F.A.Q</span> </a></li>
+     <li class="nav-item"> <a class="nav-link collapsed" href="{% url 'contact' %}"> <i class="bi bi-envelope"></i> <span>Contact</span> </a></li>
+     <li class="nav-item"> <a class="nav-link collapsed" href="{% url 'logout' %}"> <i class="bi bi-box-arrow-in-left"></i> <span>logout</span> </a></li>
+     {% else %}
+     <li class="nav-item"> <a class="nav-link collapsed" href="{% url 'login' %}"> <i class="bi bi-box-arrow-in-right"></i> <span>Login/Sign Up</span> </a></li>
+     {% endif %}
+     <li class="nav-item"> <a class="nav-link collapsed" href="{% url 'developer' %}"> <i class="bi bi-envelope"></i> <span>About Us</span> </a></li>
+  </ul>
+</aside>

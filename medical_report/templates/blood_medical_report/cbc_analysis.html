@@ -1,0 +1,1947 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content  %}
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Dashboard</h1>
+        <nav>
+           <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+              <li class="breadcrumb-item active"><a href="{% url 'cbc_' %}">CBC</a></li>
+              <li class="breadcrumb-item active">Total Count Visualization</li>
+
+           </ol>
+        </nav>
+     </div>
+     <section class="section card-body pt-5">
+
+    <h4>Blood </h4>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+
+          <div class="card h-100">
+            <div class="card-header">
+                <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+                Red blood cell
+            </div>
+   
+            <div class="card-body rbc" >
+                <canvas id="rbcChart"></canvas>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                //Red Blood Cell  Chart config
+        
+                const rbc = {
+        
+                    labels: [{% for p in pr1  %} {% if p.rbc > 0 %} '{{ p.date }}',{%endif%} {% endfor %}],
+                    datasets: [{
+                        label: 'Red Blood Cell ( x 10^12 /L)',
+                        data: [{% for p in pr1  %} {% if p.rbc > 0 %} {{ p.rbc }},{% endif %} {% endfor %}],
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 3
+                    }] 
+                };
+
+                 // doubleArbitraryLine Plugin
+                    const redDoubleArbitraryLine = {
+                        id: 'redDoubleArbitraryLine',
+                        beforeDraw(chart, args, options) {
+                            const { ctx, chartArea: { top, right, bottom, left, width, height },
+                            scales: { x,y } } = chart;
+                            ctx.save()
+                            console.log(ctx)
+                            
+                            // Success 
+                            ctx.strokeStyle = 'red',
+                            ctx.strokeRect(left, y.getPixelForValue(3.5), width, 0);
+                            ctx.restore();
+                            // Danger 
+                            ctx.strokeStyle = 'blue',
+                            ctx.strokeRect(left, y.getPixelForValue(2), width, 0);
+                            ctx.restore();
+                        }
+                    }
+        
+        
+                const rbcconfig = {
+        
+                    type: 'bar',
+                        data: rbc,
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        },     
+                        plugins: [redDoubleArbitraryLine]
+                    };
+
+        
+                const rbcChart = new Chart(
+                    document.getElementById('rbcChart'),
+                    rbcconfig
+                );
+            </script>
+          </div>
+        </div>
+
+
+
+
+        <div class="col-md-6 mb-3">
+          <div class="card h-100">
+            <div class="card-header">
+              <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+              White blood cell
+            </div>
+            <div class="card-body wbc">
+                <canvas id="wbcChart"></canvas>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+            // White blood cell 
+        
+        
+                const wbc = {
+        
+                        labels: [{% for p in pr1  %} {% if p.wbc > 0 %} '{{ p.date }}',{%endif%} {% endfor %}],
+                        datasets: [{
+                            label: 'White Blood Cell ( x 10^9 /L )',
+                            data: [{% for p in pr1  %} {% if p.wbc > 0 %} {{ p.wbc }}, {%endif%} {% endfor %}],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 3
+                        }] 
+                    };
+        
+        
+                const wbcconfig = {
+        
+                    type: 'bar',
+                        data: wbc,
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+        
+                    };
+        
+                    const wbcChart = new Chart(
+                    document.getElementById('wbcChart'),
+                    wbcconfig
+                    );
+            </script>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <div class="card h-100">
+            <div class="card-header">
+              <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+              Platelates blood cell
+            </div>
+            <div class="card-body plt">
+                <canvas id="pltChart"></canvas>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                const plt = {
+        
+                labels: [{% for p in pr1  %} {% if p.plt > 0 %} '{{ p.date }}' ,{% endif %} {% endfor %}],
+                datasets: [{
+                    label: 'Platelates (x 10^9 /L)',
+                    data: [{% for p in pr1  %} {% if p.plt > 0 %} {{ p.plt }} ,{% endif %} {% endfor %}],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 3
+                }] 
+                };
+        
+        
+                const pltconfig = {
+        
+                type: 'bar',
+                data: plt,
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+        
+                };
+        
+                const pltChart = new Chart(
+                document.getElementById('pltChart'),
+                pltconfig
+                );
+            </script>
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <div class="card h-100">
+            <div class="card-header">
+              <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+              Hemoglobin blood cell
+            </div>
+            <div class="card-body hbg">
+                <canvas id="hbChart"></canvas>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                // Hemoglobin data file
+                const hbg = {
+    
+                    labels: [{% for p in pr1  %} {% if p.hbg > 0 %} '{{ p.date }}',{%endif%} {% endfor %}],
+                    datasets: [{
+                        label: 'Hemoglobin (G/L)',
+                        data: [{% for p in pr1  %} {% if p.hbg > 0 %} {{ p.hbg }},{%endif%} {% endfor %}],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 3
+                    }] 
+                };
+                // Config bar chart
+                const hbconfig = {
+                    type: 'bar',
+                        data:hbg,
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                };
+                //Render init Block
+    
+                const hbChart = new Chart(
+                    document.getElementById('hbChart'),
+                    hbconfig
+                );
+            </script>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+
+<!--Absoluteleukocytecount-->
+
+
+   <div class="pagetitle">
+        <h1>Absolute Leukocyte Count</h1>
+     </div>
+     <section class="section card-body pt-5">
+    <div class="row">
+        <div class="col-md-6 mb-3">
+
+          <div class="card h-100">
+            <div class="card-header">
+                <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+                Neutrophil
+            </div>
+   
+            <div class="card-body neutrophil" >
+                <canvas id="neutrophilChart"></canvas>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                //Red Blood Cell  Chart config
+        
+                const neutrophil = {
+        
+                    labels: [{% for p in pr2  %} {% if p.neutrophil > 0 %} '{{ p.date }}',{%endif%} {% endfor %}],
+                    datasets: [{
+                        label: 'Red Blood Cell ( x 10^12 /L)',
+                        data: [{% for p in pr2  %} {% if p.neutrophil > 0 %} {{ p.neutrophil }},{% endif %} {% endfor %}],
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 3
+                    }] 
+                };
+
+                 // doubleArbitraryLine Plugin
+                    const neutrophilDoubleArbitraryLine = {
+                        id: 'neutrophilDoubleArbitraryLine',
+                        beforeDraw(chart, args, options) {
+                            const { ctx, chartArea: { top, right, bottom, left, width, height },
+                            scales: { x,y } } = chart;
+                            ctx.save()
+                            console.log(ctx)
+                            
+                            // Success 
+                            ctx.strokeStyle = 'red',
+                            ctx.strokeRect(left, y.getPixelForValue(3.5), width, 0);
+                            ctx.restore();
+                            // Danger 
+                            ctx.strokeStyle = 'blue',
+                            ctx.strokeRect(left, y.getPixelForValue(2), width, 0);
+                            ctx.restore();
+                        }
+                    }
+        
+        
+                const neutrophilconfig = {
+        
+                    type: 'bar',
+                        data: neutrophil,
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        },     
+                        plugins: [neutrophilDoubleArbitraryLine]
+                    };
+
+        
+                const neutrophilChart = new Chart(
+                    document.getElementById('neutrophilChart'),
+                    neutrophilconfig
+                );
+            </script>
+          </div>
+
+        </div>
+
+
+
+
+
+
+        <div class="col-md-6 mb-3">
+
+            <div class="card h-100">
+              <div class="card-header">
+                  <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+                  lymphocyte
+              </div>
+     
+              <div class="card-body lymphocyte" >
+                  <canvas id="lymphocyteChart"></canvas>
+              </div>
+              <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+              <script>
+                  //Red Blood Cell  Chart config
+          
+                  const lymphocyte = {
+          
+                      labels: [{% for p in pr2  %} {% if p.lymphocyte > 0 %} '{{ p.date }}',{%endif%} {% endfor %}],
+                      datasets: [{
+                          label: 'lymphocyte Blood Cell ( x 10^12 /L)',
+                          data: [{% for p in pr2  %} {% if p.lymphocyte > 0 %} {{ p.lymphocyte }},{% endif %} {% endfor %}],
+                          backgroundColor: [
+                              'rgba(75, 192, 192, 0.2)',
+                              'rgba(255, 99, 132, 0.2)',
+                              'rgba(54, 162, 235, 0.2)',
+                              'rgba(255, 206, 86, 0.2)',
+                              'rgba(153, 102, 255, 0.2)',
+                              'rgba(255, 159, 64, 0.2)'
+                          ],
+                          borderColor: [
+                              'rgba(255, 99, 132, 1)',
+                              'rgba(54, 162, 235, 1)',
+                              'rgba(255, 206, 86, 1)',
+                              'rgba(75, 192, 192, 1)',
+                              'rgba(153, 102, 255, 1)',
+                              'rgba(255, 159, 64, 1)'
+                          ],
+                          borderWidth: 3
+                      }] 
+                  };
+  
+                   // doubleArbitraryLine Plugin
+                      const lymphocyteDoubleArbitraryLine = {
+                          id: 'lymphocyteDoubleArbitraryLine',
+                          beforeDraw(chart, args, options) {
+                              const { ctx, chartArea: { top, right, bottom, left, width, height },
+                              scales: { x,y } } = chart;
+                              ctx.save()
+                              console.log(ctx)
+                              
+                              // Success 
+                              ctx.strokeStyle = 'red',
+                              ctx.strokeRect(left, y.getPixelForValue(3.5), width, 0);
+                              ctx.restore();
+                              // Danger 
+                              ctx.strokeStyle = 'blue',
+                              ctx.strokeRect(left, y.getPixelForValue(2), width, 0);
+                              ctx.restore();
+                          }
+                      }
+          
+          
+                  const lymphocyteconfig = {
+          
+                      type: 'bar',
+                          data: lymphocyte,
+                          options: {
+                              scales: {
+                                  y: {
+                                      beginAtZero: true
+                                  }
+                              }
+                          },     
+                          plugins: [lymphocyteDoubleArbitraryLine]
+                      };
+  
+          
+                  const lymphocyteChart = new Chart(
+                      document.getElementById('lymphocyteChart'),
+                      lymphocyteconfig
+                  );
+              </script>
+            </div>
+          </div>
+
+
+
+
+          <div class="col-md-6 mb-3">
+
+            <div class="card h-100">
+              <div class="card-header">
+                  <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+                  monocyte
+              </div>
+     
+              <div class="card-body monocyte" >
+                  <canvas id="monocyteChart"></canvas>
+              </div>
+              <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+              <script>
+                  //Red Blood Cell  Chart config
+          
+                  const monocyte = {
+          
+                      labels: [{% for p in pr2  %} {% if p.monocyte > 0 %} '{{ p.date }}',{%endif%} {% endfor %}],
+                      datasets: [{
+                          label: 'monocyte Blood Cell ( x 10^12 /L)',
+                          data: [{% for p in pr2  %} {% if p.monocyte > 0 %} {{ p.monocyte }},{% endif %} {% endfor %}],
+                          backgroundColor: [
+                              'rgba(75, 192, 192, 0.2)',
+                              'rgba(255, 99, 132, 0.2)',
+                              'rgba(54, 162, 235, 0.2)',
+                              'rgba(255, 206, 86, 0.2)',
+                              'rgba(153, 102, 255, 0.2)',
+                              'rgba(255, 159, 64, 0.2)'
+                          ],
+                          borderColor: [
+                              'rgba(255, 99, 132, 1)',
+                              'rgba(54, 162, 235, 1)',
+                              'rgba(255, 206, 86, 1)',
+                              'rgba(75, 192, 192, 1)',
+                              'rgba(153, 102, 255, 1)',
+                              'rgba(255, 159, 64, 1)'
+                          ],
+                          borderWidth: 3
+                      }] 
+                  };
+  
+                   // doubleArbitraryLine Plugin
+                      const monocyteDoubleArbitraryLine = {
+                          id: 'monocyteDoubleArbitraryLine',
+                          beforeDraw(chart, args, options) {
+                              const { ctx, chartArea: { top, right, bottom, left, width, height },
+                              scales: { x,y } } = chart;
+                              ctx.save()
+                              console.log(ctx)
+                              
+                              // Success 
+                              ctx.strokeStyle = 'red',
+                              ctx.strokeRect(left, y.getPixelForValue(3.5), width, 0);
+                              ctx.restore();
+                              // Danger 
+                              ctx.strokeStyle = 'blue',
+                              ctx.strokeRect(left, y.getPixelForValue(2), width, 0);
+                              ctx.restore();
+                          }
+                      }
+          
+          
+                  const monocyteconfig = {
+          
+                      type: 'bar',
+                          data: monocyte,
+                          options: {
+                              scales: {
+                                  y: {
+                                      beginAtZero: true
+                                  }
+                              }
+                          },     
+                          plugins: [monocyteDoubleArbitraryLine]
+                      };
+  
+          
+                  const monocyteChart = new Chart(
+                      document.getElementById('monocyteChart'),
+                      monocyteconfig
+                  );
+              </script>
+            </div>
+          </div>
+
+
+
+
+
+
+          <div class="col-md-6 mb-3">
+
+            <div class="card h-100">
+              <div class="card-header">
+                  <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+                  eosinophil
+              </div>
+     
+              <div class="card-body eosinophil" >
+                  <canvas id="eosinophilChart"></canvas>
+              </div>
+              <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+              <script>
+                  //Red Blood Cell  Chart config
+          
+                  const eosinophil = {
+          
+                      labels: [{% for p in pr2  %} {% if p.eosinophil > 0 %} '{{ p.date }}',{%endif%} {% endfor %}],
+                      datasets: [{
+                          label: 'eosinophil Blood Cell ( x 10^12 /L)',
+                          data: [{% for p in pr2  %} {% if p.eosinophil > 0 %} {{ p.eosinophil }},{% endif %} {% endfor %}],
+                          backgroundColor: [
+                              'rgba(75, 192, 192, 0.2)',
+                              'rgba(255, 99, 132, 0.2)',
+                              'rgba(54, 162, 235, 0.2)',
+                              'rgba(255, 206, 86, 0.2)',
+                              'rgba(153, 102, 255, 0.2)',
+                              'rgba(255, 159, 64, 0.2)'
+                          ],
+                          borderColor: [
+                              'rgba(255, 99, 132, 1)',
+                              'rgba(54, 162, 235, 1)',
+                              'rgba(255, 206, 86, 1)',
+                              'rgba(75, 192, 192, 1)',
+                              'rgba(153, 102, 255, 1)',
+                              'rgba(255, 159, 64, 1)'
+                          ],
+                          borderWidth: 3
+                      }] 
+                  };
+  
+                   // doubleArbitraryLine Plugin
+                      const eosinophilDoubleArbitraryLine = {
+                          id: 'eosinophilDoubleArbitraryLine',
+                          beforeDraw(chart, args, options) {
+                              const { ctx, chartArea: { top, right, bottom, left, width, height },
+                              scales: { x,y } } = chart;
+                              ctx.save()
+                              console.log(ctx)
+                              
+                              // Success 
+                              ctx.strokeStyle = 'red',
+                              ctx.strokeRect(left, y.getPixelForValue(3.5), width, 0);
+                              ctx.restore();
+                              // Danger 
+                              ctx.strokeStyle = 'blue',
+                              ctx.strokeRect(left, y.getPixelForValue(2), width, 0);
+                              ctx.restore();
+                          }
+                      }
+          
+          
+                  const eosinophilconfig = {
+          
+                      type: 'bar',
+                          data: eosinophil,
+                          options: {
+                              scales: {
+                                  y: {
+                                      beginAtZero: true
+                                  }
+                              }
+                          },     
+                          plugins: [eosinophilDoubleArbitraryLine]
+                      };
+  
+          
+                  const eosinophilChart = new Chart(
+                      document.getElementById('eosinophilChart'),
+                      eosinophilconfig
+                  );
+              </script>
+            </div>
+          </div>
+
+
+
+        {% comment %} {% if pr2.basophil %} {% endcomment %}
+          <div class="col-md-6 mb-3">
+
+            <div class="card h-100">
+              <div class="card-header">
+                  <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+                  basophil
+              </div>
+     
+              <div class="card-body basophil" >
+                  <canvas id="basophilChart"></canvas>
+              </div>
+              <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+              <script>
+                  //Red Blood Cell  Chart config
+          
+                  const basophil = {
+          
+                      labels: [{% for p in pr2  %} {% if p.basophil > 0 %} '{{ p.date }}',{%endif%} {% endfor %}],
+                      datasets: [{
+                          label: 'basophil Blood Cell ( x 10^12 /L)',
+                          data: [{% for p in pr2  %} {% if p.basophil > 0 %} {{ p.basophil }},{% endif %} {% endfor %}],
+                          backgroundColor: [
+                              'rgba(75, 192, 192, 0.2)',
+                              'rgba(255, 99, 132, 0.2)',
+                              'rgba(54, 162, 235, 0.2)',
+                              'rgba(255, 206, 86, 0.2)',
+                              'rgba(153, 102, 255, 0.2)',
+                              'rgba(255, 159, 64, 0.2)'
+                          ],
+                          borderColor: [
+                              'rgba(255, 99, 132, 1)',
+                              'rgba(54, 162, 235, 1)',
+                              'rgba(255, 206, 86, 1)',
+                              'rgba(75, 192, 192, 1)',
+                              'rgba(153, 102, 255, 1)',
+                              'rgba(255, 159, 64, 1)'
+                          ],
+                          borderWidth: 3
+                      }] 
+                  };
+  
+                   // doubleArbitraryLine Plugin
+                      const basophilDoubleArbitraryLine = {
+                          id: 'basophilDoubleArbitraryLine',
+                          beforeDraw(chart, args, options) {
+                              const { ctx, chartArea: { top, right, bottom, left, width, height },
+                              scales: { x,y } } = chart;
+                              ctx.save()
+                              console.log(ctx)
+                              
+                              // Success 
+                              ctx.strokeStyle = 'red',
+                              ctx.strokeRect(left, y.getPixelForValue(3.5), width, 0);
+                              ctx.restore();
+                              // Danger 
+                              ctx.strokeStyle = 'blue',
+                              ctx.strokeRect(left, y.getPixelForValue(2), width, 0);
+                              ctx.restore();
+                          }
+                      }
+          
+          
+                  const basophilconfig = {
+          
+                      type: 'bar',
+                          data: basophil,
+                          options: {
+                              scales: {
+                                  y: {
+                                      beginAtZero: true
+                                  }
+                              }
+                          },     
+                          plugins: [basophilDoubleArbitraryLine]
+                      };
+  
+          
+                  const basophilChart = new Chart(
+                      document.getElementById('basophilChart'),
+                      basophilconfig
+                  );
+              </script>
+            </div>
+          </div>
+          {% comment %} {% endif %} {% endcomment %}
+
+
+        
+
+
+        
+      </div>
+    </section>
+
+
+
+
+
+<!--Differentialleukocytecount-->
+
+    <div class="pagetitle">
+        <h1>DIf Leukocyte Count</h1>
+     </div>
+     <section class="section card-body pt-5">
+    <div class="row">
+        <div class="col-md-6 mb-3">
+
+          <div class="card h-100">
+            <div class="card-header">
+                <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+                neutrophil2
+            </div>
+   
+            <div class="card-body neutrophil2" >
+                <canvas id="neutrophil2Chart"></canvas>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                //Red Blood Cell  Chart config
+        
+                const neutrophil2 = {
+        
+                    labels: [{% for p in pr3  %} {% if p.neutrophil2 > 0 %} '{{ p.date }}',{%endif%} {% endfor %}],
+                    datasets: [{
+                        label: 'neutrophil2 Blood Cell ( x 10^12 /L)',
+                        data: [{% for p in pr3  %} {% if p.neutrophil2 > 0 %} {{ p.neutrophil2 }},{% endif %} {% endfor %}],
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 3
+                    }] 
+                };
+
+                 // doubleArbitraryLine Plugin
+                    const neutrophil2DoubleArbitraryLine = {
+                        id: 'neutrophil2DoubleArbitraryLine',
+                        beforeDraw(chart, args, options) {
+                            const { ctx, chartArea: { top, right, bottom, left, width, height },
+                            scales: { x,y } } = chart;
+                            ctx.save()
+                            console.log(ctx)
+                            
+                            // Success 
+                            ctx.strokeStyle = 'red',
+                            ctx.strokeRect(left, y.getPixelForValue(3.5), width, 0);
+                            ctx.restore();
+                            // Danger 
+                            ctx.strokeStyle = 'blue',
+                            ctx.strokeRect(left, y.getPixelForValue(2), width, 0);
+                            ctx.restore();
+                        }
+                    }
+        
+        
+                const neutrophil2config = {
+        
+                    type: 'bar',
+                        data: neutrophil2,
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        },     
+                        plugins: [neutrophil2DoubleArbitraryLine]
+                    };
+
+        
+                const neutrophil2Chart = new Chart(
+                    document.getElementById('neutrophil2Chart'),
+                    neutrophil2config
+                );
+            </script>
+          </div>   
+        </div>
+
+
+
+        <div class="col-md-6 mb-3">
+
+            <div class="card h-100">
+              <div class="card-header">
+                  <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+                  lymphocyte2
+              </div>
+     
+              <div class="card-body lymphocyte2" >
+                  <canvas id="lymphocyte2Chart"></canvas>
+              </div>
+              <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+              <script>
+                  //Red Blood Cell  Chart config
+          
+                  const lymphocyte2 = {
+          
+                      labels: [{% for p in pr3  %} {% if p.lymphocyte2 > 0 %} '{{ p.date }}',{%endif%} {% endfor %}],
+                      datasets: [{
+                          label: 'lymphocyte2 Blood Cell ( x 10^12 /L)',
+                          data: [{% for p in pr3  %} {% if p.lymphocyte2 > 0 %} {{ p.lymphocyte2 }},{% endif %} {% endfor %}],
+                          backgroundColor: [
+                              'rgba(75, 192, 192, 0.2)',
+                              'rgba(255, 99, 132, 0.2)',
+                              'rgba(54, 162, 235, 0.2)',
+                              'rgba(255, 206, 86, 0.2)',
+                              'rgba(153, 102, 255, 0.2)',
+                              'rgba(255, 159, 64, 0.2)'
+                          ],
+                          borderColor: [
+                              'rgba(255, 99, 132, 1)',
+                              'rgba(54, 162, 235, 1)',
+                              'rgba(255, 206, 86, 1)',
+                              'rgba(75, 192, 192, 1)',
+                              'rgba(153, 102, 255, 1)',
+                              'rgba(255, 159, 64, 1)'
+                          ],
+                          borderWidth: 3
+                      }] 
+                  };
+  
+                   // doubleArbitraryLine Plugin
+                      const lymphocyte2DoubleArbitraryLine = {
+                          id: 'lymphocyte2DoubleArbitraryLine',
+                          beforeDraw(chart, args, options) {
+                              const { ctx, chartArea: { top, right, bottom, left, width, height },
+                              scales: { x,y } } = chart;
+                              ctx.save()
+                              console.log(ctx)
+                              
+                              // Success 
+                              ctx.strokeStyle = 'red',
+                              ctx.strokeRect(left, y.getPixelForValue(3.5), width, 0);
+                              ctx.restore();
+                              // Danger 
+                              ctx.strokeStyle = 'blue',
+                              ctx.strokeRect(left, y.getPixelForValue(2), width, 0);
+                              ctx.restore();
+                          }
+                      }
+          
+          
+                  const lymphocyte2config = {
+          
+                      type: 'bar',
+                          data: lymphocyte2,
+                          options: {
+                              scales: {
+                                  y: {
+                                      beginAtZero: true
+                                  }
+                              }
+                          },     
+                          plugins: [lymphocyte2DoubleArbitraryLine]
+                      };
+  
+          
+                  const lymphocyte2Chart = new Chart(
+                      document.getElementById('lymphocyte2Chart'),
+                      lymphocyte2config
+                  );
+              </script>
+            </div>
+          </div>
+
+
+
+
+
+
+          <div class="col-md-6 mb-3">
+
+            <div class="card h-100">
+              <div class="card-header">
+                  <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+                  monocyte2
+              </div>
+     
+              <div class="card-body monocyte2" >
+                  <canvas id="monocyte2Chart"></canvas>
+              </div>
+              <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+              <script>
+                  //Red Blood Cell  Chart config
+          
+                  const monocyte2 = {
+          
+                      labels: [{% for p in pr3  %} {% if p.monocyte2 > 0 %} '{{ p.date }}',{%endif%} {% endfor %}],
+                      datasets: [{
+                          label: 'monocyte2 Blood Cell ( x 10^12 /L)',
+                          data: [{% for p in pr3  %} {% if p.monocyte2 > 0 %} {{ p.monocyte2 }},{% endif %} {% endfor %}],
+                          backgroundColor: [
+                              'rgba(75, 192, 192, 0.2)',
+                              'rgba(255, 99, 132, 0.2)',
+                              'rgba(54, 162, 235, 0.2)',
+                              'rgba(255, 206, 86, 0.2)',
+                              'rgba(153, 102, 255, 0.2)',
+                              'rgba(255, 159, 64, 0.2)'
+                          ],
+                          borderColor: [
+                              'rgba(255, 99, 132, 1)',
+                              'rgba(54, 162, 235, 1)',
+                              'rgba(255, 206, 86, 1)',
+                              'rgba(75, 192, 192, 1)',
+                              'rgba(153, 102, 255, 1)',
+                              'rgba(255, 159, 64, 1)'
+                          ],
+                          borderWidth: 3
+                      }] 
+                  };
+  
+                   // doubleArbitraryLine Plugin
+                      const monocyte2DoubleArbitraryLine = {
+                          id: 'monocyte2DoubleArbitraryLine',
+                          beforeDraw(chart, args, options) {
+                              const { ctx, chartArea: { top, right, bottom, left, width, height },
+                              scales: { x,y } } = chart;
+                              ctx.save()
+                              console.log(ctx)
+                              
+                              // Success 
+                              ctx.strokeStyle = 'red',
+                              ctx.strokeRect(left, y.getPixelForValue(3.5), width, 0);
+                              ctx.restore();
+                              // Danger 
+                              ctx.strokeStyle = 'blue',
+                              ctx.strokeRect(left, y.getPixelForValue(2), width, 0);
+                              ctx.restore();
+                          }
+                      }
+          
+          
+                  const monocyte2config = {
+          
+                      type: 'bar',
+                          data: monocyte2,
+                          options: {
+                              scales: {
+                                  y: {
+                                      beginAtZero: true
+                                  }
+                              }
+                          },     
+                          plugins: [monocyte2DoubleArbitraryLine]
+                      };
+  
+          
+                  const monocyte2Chart = new Chart(
+                      document.getElementById('monocyte2Chart'),
+                      monocyte2config
+                  );
+              </script>
+            </div>
+          </div>
+
+
+
+
+          <div class="col-md-6 mb-3">
+
+            <div class="card h-100">
+              <div class="card-header">
+                  <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+                  eosinophil2
+              </div>
+     
+              <div class="card-body eosinophil2" >
+                  <canvas id="eosinophil2Chart"></canvas>
+              </div>
+              <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+              <script>
+                  //Red Blood Cell  Chart config
+          
+                  const eosinophil2 = {
+          
+                      labels: [{% for p in pr3  %} {% if p.eosinophil2 > 0 %} '{{ p.date }}',{%endif%} {% endfor %}],
+                      datasets: [{
+                          label: 'eosinophil2 Blood Cell ( x 10^12 /L)',
+                          data: [{% for p in pr3  %} {% if p.eosinophil2 > 0 %} {{ p.eosinophil2 }},{% endif %} {% endfor %}],
+                          backgroundColor: [
+                              'rgba(75, 192, 192, 0.2)',
+                              'rgba(255, 99, 132, 0.2)',
+                              'rgba(54, 162, 235, 0.2)',
+                              'rgba(255, 206, 86, 0.2)',
+                              'rgba(153, 102, 255, 0.2)',
+                              'rgba(255, 159, 64, 0.2)'
+                          ],
+                          borderColor: [
+                              'rgba(255, 99, 132, 1)',
+                              'rgba(54, 162, 235, 1)',
+                              'rgba(255, 206, 86, 1)',
+                              'rgba(75, 192, 192, 1)',
+                              'rgba(153, 102, 255, 1)',
+                              'rgba(255, 159, 64, 1)'
+                          ],
+                          borderWidth: 3
+                      }] 
+                  };
+  
+                   // doubleArbitraryLine Plugin
+                      const eosinophil2DoubleArbitraryLine = {
+                          id: 'eosinophil2DoubleArbitraryLine',
+                          beforeDraw(chart, args, options) {
+                              const { ctx, chartArea: { top, right, bottom, left, width, height },
+                              scales: { x,y } } = chart;
+                              ctx.save()
+                              console.log(ctx)
+                              
+                              // Success 
+                              ctx.strokeStyle = 'red',
+                              ctx.strokeRect(left, y.getPixelForValue(2), width, 0);
+                              ctx.restore();
+                              // Danger 
+                              ctx.strokeStyle = 'blue',
+                              ctx.strokeRect(left, y.getPixelForValue(1.5), width, 0);
+                              ctx.restore();
+                          }
+                      }
+          
+          
+                  const eosinophil2config = {
+          
+                      type: 'bar',
+                          data: eosinophil2,
+                          options: {
+                              scales: {
+                                  y: {
+                                      beginAtZero: true
+                                  }
+                              }
+                          },     
+                          plugins: [eosinophil2DoubleArbitraryLine]
+                      };
+  
+          
+                  const eosinophil2Chart = new Chart(
+                      document.getElementById('eosinophil2Chart'),
+                      eosinophil2config
+                  );
+              </script>
+            </div>
+          </div>
+
+
+
+
+          <div class="col-md-6 mb-3">
+
+            <div class="card h-100">
+              <div class="card-header">
+                  <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+                  basophil2
+              </div>
+     
+              <div class="card-body basophil2" >
+                  <canvas id="basophil2Chart"></canvas>
+              </div>
+              <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+              <script>
+                  //Red Blood Cell  Chart config
+          
+                  const basophil2 = {
+          
+                      labels: [{% for p in pr3  %} {% if p.basophil2 > 0 %} '{{ p.date }}',{%endif%} {% endfor %}],
+                      datasets: [{
+                          label: 'basophil2 Blood Cell ( x 10^12 /L)',
+                          data: [{% for p in pr3  %} {% if p.basophil2 > 0 %} {{ p.basophil2 }},{% endif %} {% endfor %}],
+                          backgroundColor: [
+                              'rgba(75, 192, 192, 0.2)',
+                              'rgba(255, 99, 132, 0.2)',
+                              'rgba(54, 162, 235, 0.2)',
+                              'rgba(255, 206, 86, 0.2)',
+                              'rgba(153, 102, 255, 0.2)',
+                              'rgba(255, 159, 64, 0.2)'
+                          ],
+                          borderColor: [
+                              'rgba(255, 99, 132, 1)',
+                              'rgba(54, 162, 235, 1)',
+                              'rgba(255, 206, 86, 1)',
+                              'rgba(75, 192, 192, 1)',
+                              'rgba(153, 102, 255, 1)',
+                              'rgba(255, 159, 64, 1)'
+                          ],
+                          borderWidth: 3
+                      }] 
+                  };
+  
+                   // doubleArbitraryLine Plugin
+                      const basophil2DoubleArbitraryLine = {
+                          id: 'basophil2DoubleArbitraryLine',
+                          beforeDraw(chart, args, options) {
+                              const { ctx, chartArea: { top, right, bottom, left, width, height },
+                              scales: { x,y } } = chart;
+                              ctx.save()
+                              console.log(ctx)
+                              
+                              // Success 
+                              ctx.strokeStyle = 'red',
+                              ctx.strokeRect(left, y.getPixelForValue(3.5), width, 0);
+                              ctx.restore();
+                              // Danger 
+                              ctx.strokeStyle = 'blue',
+                              ctx.strokeRect(left, y.getPixelForValue(2), width, 0);
+                              ctx.restore();
+                          }
+                      }
+          
+          
+                  const basophil2config = {
+          
+                      type: 'bar',
+                          data: basophil2,
+                          options: {
+                              scales: {
+                                  y: {
+                                      beginAtZero: true
+                                  }
+                              }
+                          },     
+                          plugins: [basophil2DoubleArbitraryLine]
+                      };
+  
+          
+                  const basophil2Chart = new Chart(
+                      document.getElementById('basophil2Chart'),
+                      basophil2config
+                  );
+              </script>
+            </div>
+          </div>
+
+
+
+
+          <!--Redcellindices Start -->
+
+    <div class="pagetitle">
+        <h1>Redcellindices</h1>
+     </div>
+     <section class="section card-body pt-5">
+    <div class="row">
+        <div class="col-md-6 mb-3">
+
+          <div class="card h-100">
+            <div class="card-header">
+                <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+                pcv
+            </div>
+   
+            <div class="card-body pcv" >
+                <canvas id="pcvChart"></canvas>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                //pcv  Chart config
+        
+                const pcv = {
+        
+                    labels: [{% for p in pr4  %} {% if p.pcv > 0 %} '{{ p.date }}',{%endif%} {% endfor %}],
+                    datasets: [{
+                        label: 'pcv Blood Cell ( x 10^12 /L)',
+                        data: [{% for p in pr4  %} {% if p.pcv > 0 %} {{ p.pcv }},{% endif %} {% endfor %}],
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 3
+                    }] 
+                };
+
+                 // doubleArbitraryLine Plugin
+                    const pcvDoubleArbitraryLine = {
+                        id: 'pcvDoubleArbitraryLine',
+                        beforeDraw(chart, args, options) {
+                            const { ctx, chartArea: { top, right, bottom, left, width, height },
+                            scales: { x,y } } = chart;
+                            ctx.save()
+                            console.log(ctx)
+                            
+                            // Success 
+                            ctx.strokeStyle = 'red',
+                            ctx.strokeRect(left, y.getPixelForValue(3.5), width, 0);
+                            ctx.restore();
+                            // Danger 
+                            ctx.strokeStyle = 'blue',
+                            ctx.strokeRect(left, y.getPixelForValue(2), width, 0);
+                            ctx.restore();
+                        }
+                    }
+        
+        
+                const pcvconfig = {
+        
+                    type: 'bar',
+                        data: pcv,
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        },     
+                        plugins: [pcvDoubleArbitraryLine]
+                    };
+
+        
+                const pcvChart = new Chart(
+                    document.getElementById('pcvChart'),
+                    pcvconfig
+                );
+            </script>
+          </div>   
+        </div>
+
+
+
+        <div class="col-md-6 mb-3">
+
+            <div class="card h-100">
+              <div class="card-header">
+                  <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+                  mcv
+              </div>
+     
+              <div class="card-body mcv" >
+                  <canvas id="mcvChart"></canvas>
+              </div>
+              <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+              <script>
+                  //mcvl  Chart config
+          
+                  const mcv = {
+          
+                      labels: [{% for p in pr4  %} {% if p.mcv > 0 %} '{{ p.date }}',{%endif%} {% endfor %}],
+                      datasets: [{
+                          label: 'mcv Blood Cell ( x 10^12 /L)',
+                          data: [{% for p in pr4  %} {% if p.mcv > 0 %} {{ p.mcv }},{% endif %} {% endfor %}],
+                          backgroundColor: [
+                              'rgba(75, 192, 192, 0.2)',
+                              'rgba(255, 99, 132, 0.2)',
+                              'rgba(54, 162, 235, 0.2)',
+                              'rgba(255, 206, 86, 0.2)',
+                              'rgba(153, 102, 255, 0.2)',
+                              'rgba(255, 159, 64, 0.2)'
+                          ],
+                          borderColor: [
+                              'rgba(255, 99, 132, 1)',
+                              'rgba(54, 162, 235, 1)',
+                              'rgba(255, 206, 86, 1)',
+                              'rgba(75, 192, 192, 1)',
+                              'rgba(153, 102, 255, 1)',
+                              'rgba(255, 159, 64, 1)'
+                          ],
+                          borderWidth: 3
+                      }] 
+                  };
+  
+                   // doubleArbitraryLine Plugin
+                      const mcvDoubleArbitraryLine = {
+                          id: 'mcvDoubleArbitraryLine',
+                          beforeDraw(chart, args, options) {
+                              const { ctx, chartArea: { top, right, bottom, left, width, height },
+                              scales: { x,y } } = chart;
+                              ctx.save()
+                              console.log(ctx)
+                              
+                              // Success 
+                              ctx.strokeStyle = 'red',
+                              ctx.strokeRect(left, y.getPixelForValue(3.5), width, 0);
+                              ctx.restore();
+                              // Danger 
+                              ctx.strokeStyle = 'blue',
+                              ctx.strokeRect(left, y.getPixelForValue(2), width, 0);
+                              ctx.restore();
+                          }
+                      }
+          
+          
+                  const mcvconfig = {
+          
+                      type: 'bar',
+                          data: mcv,
+                          options: {
+                              scales: {
+                                  y: {
+                                      beginAtZero: true
+                                  }
+                              }
+                          },     
+                          plugins: [mcvDoubleArbitraryLine]
+                      };
+  
+          
+                  const mcvChart = new Chart(
+                      document.getElementById('mcvChart'),
+                      mcvconfig
+                  );
+              </script>
+            </div>
+          </div>
+
+
+
+
+
+
+          <div class="col-md-6 mb-3">
+
+            <div class="card h-100">
+              <div class="card-header">
+                  <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+                  mch
+              </div>
+     
+              <div class="card-body mch" >
+                  <canvas id="mchChart"></canvas>
+              </div>
+              <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+              <script>
+                  //mchl  Chart config
+          
+                  const mch = {
+          
+                      labels: [{% for p in pr4  %} {% if p.mch > 0 %} '{{ p.date }}',{%endif%} {% endfor %}],
+                      datasets: [{
+                          label: 'mch Blood Cell ( x 10^12 /L)',
+                          data: [{% for p in pr4  %} {% if p.mch > 0 %} {{ p.mch }},{% endif %} {% endfor %}],
+                          backgroundColor: [
+                              'rgba(75, 192, 192, 0.2)',
+                              'rgba(255, 99, 132, 0.2)',
+                              'rgba(54, 162, 235, 0.2)',
+                              'rgba(255, 206, 86, 0.2)',
+                              'rgba(153, 102, 255, 0.2)',
+                              'rgba(255, 159, 64, 0.2)'
+                          ],
+                          borderColor: [
+                              'rgba(255, 99, 132, 1)',
+                              'rgba(54, 162, 235, 1)',
+                              'rgba(255, 206, 86, 1)',
+                              'rgba(75, 192, 192, 1)',
+                              'rgba(153, 102, 255, 1)',
+                              'rgba(255, 159, 64, 1)'
+                          ],
+                          borderWidth: 3
+                      }] 
+                  };
+  
+                   // doubleArbitraryLine Plugin
+                      const mchDoubleArbitraryLine = {
+                          id: 'mchDoubleArbitraryLine',
+                          beforeDraw(chart, args, options) {
+                              const { ctx, chartArea: { top, right, bottom, left, width, height },
+                              scales: { x,y } } = chart;
+                              ctx.save()
+                              console.log(ctx)
+                              
+                              // Success 
+                              ctx.strokeStyle = 'red',
+                              ctx.strokeRect(left, y.getPixelForValue(3.5), width, 0);
+                              ctx.restore();
+                              // Danger 
+                              ctx.strokeStyle = 'blue',
+                              ctx.strokeRect(left, y.getPixelForValue(2), width, 0);
+                              ctx.restore();
+                          }
+                      }
+          
+          
+                  const mchconfig = {
+          
+                      type: 'bar',
+                          data: mch,
+                          options: {
+                              scales: {
+                                  y: {
+                                      beginAtZero: true
+                                  }
+                              }
+                          },     
+                          plugins: [mchDoubleArbitraryLine]
+                      };
+  
+          
+                  const mchChart = new Chart(
+                      document.getElementById('mchChart'),
+                      mchconfig
+                  );
+              </script>
+            </div>
+          </div>
+
+
+
+
+          <div class="col-md-6 mb-3">
+
+            <div class="card h-100">
+              <div class="card-header">
+                  <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+                  mchc
+              </div>
+     
+              <div class="card-body mchc" >
+                  <canvas id="mchcChart"></canvas>
+              </div>
+              <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+              <script>
+                  //Red Blood Cell  Chart config
+          
+                  const mchc = {
+          
+                      labels: [{% for p in pr4  %} {% if p.mchc > 0 %} '{{ p.date }}',{%endif%} {% endfor %}],
+                      datasets: [{
+                          label: 'mchc Blood Cell ( x 10^12 /L)',
+                          data: [{% for p in pr4  %} {% if p.mchc > 0 %} {{ p.mchc }},{% endif %} {% endfor %}],
+                          backgroundColor: [
+                              'rgba(75, 192, 192, 0.2)',
+                              'rgba(255, 99, 132, 0.2)',
+                              'rgba(54, 162, 235, 0.2)',
+                              'rgba(255, 206, 86, 0.2)',
+                              'rgba(153, 102, 255, 0.2)',
+                              'rgba(255, 159, 64, 0.2)'
+                          ],
+                          borderColor: [
+                              'rgba(255, 99, 132, 1)',
+                              'rgba(54, 162, 235, 1)',
+                              'rgba(255, 206, 86, 1)',
+                              'rgba(75, 192, 192, 1)',
+                              'rgba(153, 102, 255, 1)',
+                              'rgba(255, 159, 64, 1)'
+                          ],
+                          borderWidth: 3
+                      }] 
+                  };
+  
+                   // doubleArbitraryLine Plugin
+                      const mchcDoubleArbitraryLine = {
+                          id: 'mchcDoubleArbitraryLine',
+                          beforeDraw(chart, args, options) {
+                              const { ctx, chartArea: { top, right, bottom, left, width, height },
+                              scales: { x,y } } = chart;
+                              ctx.save()
+                              console.log(ctx)
+                              
+                              // Success 
+                              ctx.strokeStyle = 'red',
+                              ctx.strokeRect(left, y.getPixelForValue(2), width, 0);
+                              ctx.restore();
+                              // Danger 
+                              ctx.strokeStyle = 'blue',
+                              ctx.strokeRect(left, y.getPixelForValue(1.5), width, 0);
+                              ctx.restore();
+                          }
+                      }
+          
+          
+                  const mchcconfig = {
+          
+                      type: 'bar',
+                          data: mchc,
+                          options: {
+                              scales: {
+                                  y: {
+                                      beginAtZero: true
+                                  }
+                              }
+                          },     
+                          plugins: [mchcDoubleArbitraryLine]
+                      };
+  
+          
+                  const mchcChart = new Chart(
+                      document.getElementById('mchcChart'),
+                      mchcconfig
+                  );
+              </script>
+            </div>
+          </div>
+
+
+
+
+          <div class="col-md-6 mb-3">
+
+            <div class="card h-100">
+              <div class="card-header">
+                  <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+                  rdw
+              </div>
+     
+              <div class="card-body rdw" >
+                  <canvas id="rdwChart"></canvas>
+              </div>
+              <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+              <script>
+                  //Red Blood Cell  Chart config
+          
+                  const rdw = {
+          
+                      labels: [{% for p in pr4  %} {% if p.rdw > 0 %} '{{ p.date }}',{%endif%} {% endfor %}],
+                      datasets: [{
+                          label: 'rdw Blood Cell ( x 10^12 /L)',
+                          data: [{% for p in pr4  %} {% if p.rdw > 0 %} {{ p.rdw }},{% endif %} {% endfor %}],
+                          backgroundColor: [
+                              'rgba(75, 192, 192, 0.2)',
+                              'rgba(255, 99, 132, 0.2)',
+                              'rgba(54, 162, 235, 0.2)',
+                              'rgba(255, 206, 86, 0.2)',
+                              'rgba(153, 102, 255, 0.2)',
+                              'rgba(255, 159, 64, 0.2)'
+                          ],
+                          borderColor: [
+                              'rgba(255, 99, 132, 1)',
+                              'rgba(54, 162, 235, 1)',
+                              'rgba(255, 206, 86, 1)',
+                              'rgba(75, 192, 192, 1)',
+                              'rgba(153, 102, 255, 1)',
+                              'rgba(255, 159, 64, 1)'
+                          ],
+                          borderWidth: 3
+                      }] 
+                  };
+  
+                   // doubleArbitraryLine Plugin
+                      const rdwDoubleArbitraryLine = {
+                          id: 'rdwDoubleArbitraryLine',
+                          beforeDraw(chart, args, options) {
+                              const { ctx, chartArea: { top, right, bottom, left, width, height },
+                              scales: { x,y } } = chart;
+                              ctx.save()
+                              console.log(ctx)
+                              
+                              // Success 
+                              ctx.strokeStyle = 'red',
+                              ctx.strokeRect(left, y.getPixelForValue(3.5), width, 0);
+                              ctx.restore();
+                              // Danger 
+                              ctx.strokeStyle = 'blue',
+                              ctx.strokeRect(left, y.getPixelForValue(2), width, 0);
+                              ctx.restore();
+                          }
+                      }
+          
+          
+                  const rdwconfig = {
+          
+                      type: 'bar',
+                          data: rdw,
+                          options: {
+                              scales: {
+                                  y: {
+                                      beginAtZero: true
+                                  }
+                              }
+                          },     
+                          plugins: [rdwDoubleArbitraryLine]
+                      };
+  
+          
+                  const rdwChart = new Chart(
+                      document.getElementById('rdwChart'),
+                      rdwconfig
+                  );
+              </script>
+            </div>
+          </div>
+            <!--Redcellindices End -->
+
+
+
+                     <!--Pltpanel Start -->
+
+    <div class="pagetitle">
+        <h1>Pltpanel</h1>
+     </div>
+     <section class="section card-body pt-5">
+    <div class="row">
+        <div class="col-md-6 mb-3">
+
+          <div class="card h-100">
+            <div class="card-header">
+                <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+                pct
+            </div>
+   
+            <div class="card-body pct" >
+                <canvas id="pctChart"></canvas>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                //pct  Chart config
+        
+                const pct = {
+        
+                    labels: [{% for p in pr5  %} {% if p.pct > 0 %} '{{ p.date }}',{%endif%} {% endfor %}],
+                    datasets: [{
+                        label: 'pct Blood Cell ( x 10^12 /L)',
+                        data: [{% for p in pr5  %} {% if p.pct > 0 %} {{ p.pct }},{% endif %} {% endfor %}],
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 3
+                    }] 
+                };
+
+                 // doubleArbitraryLine Plugin
+                    const pctDoubleArbitraryLine = {
+                        id: 'pctDoubleArbitraryLine',
+                        beforeDraw(chart, args, options) {
+                            const { ctx, chartArea: { top, right, bottom, left, width, height },
+                            scales: { x,y } } = chart;
+                            ctx.save()
+                            console.log(ctx)
+                            
+                            // Success 
+                            ctx.strokeStyle = 'red',
+                            ctx.strokeRect(left, y.getPixelForValue(3.5), width, 0);
+                            ctx.restore();
+                            // Danger 
+                            ctx.strokeStyle = 'blue',
+                            ctx.strokeRect(left, y.getPixelForValue(2), width, 0);
+                            ctx.restore();
+                        }
+                    }
+        
+        
+                const pctconfig = {
+        
+                    type: 'bar',
+                        data: pct,
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        },     
+                        plugins: [pctDoubleArbitraryLine]
+                    };
+
+        
+                const pctChart = new Chart(
+                    document.getElementById('pctChart'),
+                    pctconfig
+                );
+            </script>
+          </div>   
+        </div>
+
+
+
+        <div class="col-md-6 mb-3">
+
+            <div class="card h-100">
+              <div class="card-header">
+                  <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+                  mpv
+              </div>
+     
+              <div class="card-body mpv" >
+                  <canvas id="mpvChart"></canvas>
+              </div>
+              <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+              <script>
+                  //mcvl  Chart config
+          
+                  const mpv = {
+          
+                      labels: [{% for p in pr5  %} {% if p.mpv > 0 %} '{{ p.date }}',{%endif%} {% endfor %}],
+                      datasets: [{
+                          label: 'mpv Blood Cell ( x 10^12 /L)',
+                          data: [{% for p in pr5  %} {% if p.mpv > 0 %} {{ p.mpv }},{% endif %} {% endfor %}],
+                          backgroundColor: [
+                              'rgba(75, 192, 192, 0.2)',
+                              'rgba(255, 99, 132, 0.2)',
+                              'rgba(54, 162, 235, 0.2)',
+                              'rgba(255, 206, 86, 0.2)',
+                              'rgba(153, 102, 255, 0.2)',
+                              'rgba(255, 159, 64, 0.2)'
+                          ],
+                          borderColor: [
+                              'rgba(255, 99, 132, 1)',
+                              'rgba(54, 162, 235, 1)',
+                              'rgba(255, 206, 86, 1)',
+                              'rgba(75, 192, 192, 1)',
+                              'rgba(153, 102, 255, 1)',
+                              'rgba(255, 159, 64, 1)'
+                          ],
+                          borderWidth: 3
+                      }] 
+                  };
+  
+                   // doubleArbitraryLine Plugin
+                      const mpvDoubleArbitraryLine = {
+                          id: 'mpvDoubleArbitraryLine',
+                          beforeDraw(chart, args, options) {
+                              const { ctx, chartArea: { top, right, bottom, left, width, height },
+                              scales: { x,y } } = chart;
+                              ctx.save()
+                              console.log(ctx)
+                              
+                              // Success 
+                              ctx.strokeStyle = 'red',
+                              ctx.strokeRect(left, y.getPixelForValue(3.5), width, 0);
+                              ctx.restore();
+                              // Danger 
+                              ctx.strokeStyle = 'blue',
+                              ctx.strokeRect(left, y.getPixelForValue(2), width, 0);
+                              ctx.restore();
+                          }
+                      }
+          
+          
+                  const mpvconfig = {
+          
+                      type: 'bar',
+                          data: mpv,
+                          options: {
+                              scales: {
+                                  y: {
+                                      beginAtZero: true
+                                  }
+                              }
+                          },     
+                          plugins: [mpvDoubleArbitraryLine]
+                      };
+  
+          
+                  const mpvChart = new Chart(
+                      document.getElementById('mpvChart'),
+                      mpvconfig
+                  );
+              </script>
+            </div>
+          </div>
+
+
+
+
+
+
+          <div class="col-md-6 mb-3">
+
+            <div class="card h-100">
+              <div class="card-header">
+                  <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+                  pdw
+              </div>
+     
+              <div class="card-body pdw" >
+                  <canvas id="pdwChart"></canvas>
+              </div>
+              <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+              <script>
+                  //pdw  Chart config
+          
+                  const pdw = {
+          
+                      labels: [{% for p in pr5  %} {% if p.pdw > 0 %} '{{ p.date }}',{%endif%} {% endfor %}],
+                      datasets: [{
+                          label: 'pdw Blood Cell ( x 10^12 /L)',
+                          data: [{% for p in pr5  %} {% if p.pdw > 0 %} {{ p.pdw }},{% endif %} {% endfor %}],
+                          backgroundColor: [
+                              'rgba(75, 192, 192, 0.2)',
+                              'rgba(255, 99, 132, 0.2)',
+                              'rgba(54, 162, 235, 0.2)',
+                              'rgba(255, 206, 86, 0.2)',
+                              'rgba(153, 102, 255, 0.2)',
+                              'rgba(255, 159, 64, 0.2)'
+                          ],
+                          borderColor: [
+                              'rgba(255, 99, 132, 1)',
+                              'rgba(54, 162, 235, 1)',
+                              'rgba(255, 206, 86, 1)',
+                              'rgba(75, 192, 192, 1)',
+                              'rgba(153, 102, 255, 1)',
+                              'rgba(255, 159, 64, 1)'
+                          ],
+                          borderWidth: 3
+                      }] 
+                  };
+  
+                   // doubleArbitraryLine Plugin
+                      const pdwDoubleArbitraryLine = {
+                          id: 'pdwDoubleArbitraryLine',
+                          beforeDraw(chart, args, options) {
+                              const { ctx, chartArea: { top, right, bottom, left, width, height },
+                              scales: { x,y } } = chart;
+                              ctx.save()
+                              console.log(ctx)
+                              
+                              // Success 
+                              ctx.strokeStyle = 'red',
+                              ctx.strokeRect(left, y.getPixelForValue(3.5), width, 0);
+                              ctx.restore();
+                              // Danger 
+                              ctx.strokeStyle = 'blue',
+                              ctx.strokeRect(left, y.getPixelForValue(2), width, 0);
+                              ctx.restore();
+                          }
+                      }
+          
+          
+                  const pdwconfig = {
+          
+                      type: 'bar',
+                          data: pdw,
+                          options: {
+                              scales: {
+                                  y: {
+                                      beginAtZero: true
+                                  }
+                              }
+                          },     
+                          plugins: [pdwDoubleArbitraryLine]
+                      };
+  
+          
+                  const pdwChart = new Chart(
+                      document.getElementById('pdwChart'),
+                      pdwconfig
+                  );
+              </script>
+            </div>
+          </div>
+
+
+
+
+            <!--Pltpanel End -->
+
+
+
+
+
+
+
+      </div>
+    </section>
+
+
+</main>
+
+{% endblock  %}

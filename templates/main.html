@@ -1,69 +1,64 @@
 <!DOCTYPE html>
 {% load static %}
-<html>
+{% load notifications_tags %}
 
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <meta content="width=device-width, initial-scale=1.0" name="viewport">
+      <title>MyReports - Analysis Your Image Here..</title>
+      <meta name="robots" content="noindex, nofollow">
+      <meta content="" name="description">
+      <meta content="" name="keywords">
+      <link href=" {% static 'assets/img/myreports.png' %} " rel="icon">
+      <link href="  {% static 'assets/img/myreports.png' %} " rel="apple-touch-icon">
+      <link href="https://fonts.gstatic.com" rel="preconnect">
+      <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+      <link href=" {% static 'assets/css/bootstrap.min.css' %} " rel="stylesheet">
+      <link href=" {% static 'assets/css/bootstrap-icons.css' %} " rel="stylesheet">
+      <link href=" {% static 'assets/css/boxicons.min.css' %} " rel="stylesheet">
+      <link href=" {% static 'assets/css/quill.snow.css' %} " rel="stylesheet">
+      <link href=" {% static 'assets/css/quill.bubble.css' %}" rel="stylesheet">
+      <link href=" {% static 'assets/css/remixicon.css' %}" rel="stylesheet">
+      <link href=" {% static 'assets/css/simple-datatables.css' %}" rel="stylesheet">
+      <link href=" {% static 'assets/css/style.css' %}" rel="stylesheet">
+      <link href=" {% static 'styles/a.css' %}" rel="stylesheet">
+      <link href=" {% static 'styles/gallery.css' %}" rel="stylesheet">
+      <link href=" {% static 'styles/login_reg.css' %}" rel="stylesheet">
+      
 
-    <!-- Favicon -->
-    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
-    <!-- Icon - IconMonster -->
-    <link rel="stylesheet" href="https://cdn.iconmonstr.com/1.3.0/css/iconmonstr-iconic-font.min.css" />
-    <!-- Mumble UI -->
-    <link rel="stylesheet" href="{% static 'uikit/styles/uikit.css' %}" />
-    <!-- Bosstrap-->
-    {% comment %} <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous"> {% endcomment %}
-
-    <!-- Dev Search UI -->
-    <link rel="stylesheet" href="{% static 'styles/app.css' %}" />
-    <link rel="stylesheet" href="{% static 'styles/a.css' %}" />
-    <link rel="stylesheet" href="{% static 'styles/b.css' %}" />
-    <link rel="stylesheet" href="{% static 'styles/chart.css' %}" />
-    <link rel="stylesheet" href="{% static 'styles/gallery.css' %}" />
-
-    <link rel="stylesheet" href="{% static 'styles/a.css' %}" />
-    <link rel="icon" href="{% static 'images/medd.jpg' %}" type="image/icon type" sizes="152x152">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
-
-    <title>My Reports</title>
-
-</head>
-
-<body>
-    {% include 'navbar.html' %}
-
-
-    {% comment %} {% if messages %}
-        <ul class="messages">
-             {% for message in messages %}
-                 <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-             {% endfor %}
-        </ul>
-    {% endif %} {% endcomment %}
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
 
 
 
-    {% if messages %}
 
-    {% for message in messages %}
-    <div class="alert  alert--{{message.tags}}">
-        <p class="alert__message">{{message}}</p>
-        <button class="alert__close">x</button>
-    </div>
+   </head>
+   <body>
 
-    {% endfor %}
-
-    {% endif %}
-
+    {% include 'navbar1.html' %}
 
     {% block content %}
 
     {% endblock content %}
-</body>
-<script src="{% static 'uikit/app.js' %}"></script>
-{% comment %} <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script> {% endcomment %}
+    
+      
 
+        <script src=" {% static 'assets/js/apexcharts.min.js' %} "></script>
+        <script src=" {% static 'assets/js/bootstrap.bundle.min.js' %} "></script>
+        <script src=" {% static 'assets/js/chart.min.js' %} "></script>
+        <script src=" {% static 'assets/js/echarts.min.js' %} "></script>
+        <script src=" {% static 'assets/js/quill.min.js' %} "></script>
+        <script src=" {% static 'assets/js/simple-datatables.js' %} "></script>
+        <script src=" {% static 'assets/js/tinymce.min.js' %} "></script>
+        <script src=" {% static 'assets/js/validate.js' %} "></script>
+        <script src=" {% static 'assets/js/main.js' %} "></script> 
+        <script src=" {% static 'notifications/notify.js' %} " type="text/javascript"></script> 
+
+
+
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+   </body>
 </html>

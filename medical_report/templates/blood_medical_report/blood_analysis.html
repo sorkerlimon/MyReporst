@@ -2,225 +2,224 @@
 {% load static %}
 
 {% block content  %}
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Dashboard</h1>
+        <nav>
+           <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="">Home</a></li>
+              <li class="breadcrumb-item active">Dashboard</li>
+           </ol>
+        </nav>
+     </div>
+     <section class="section card-body pt-5">
 
-
-<section class="hero-section text-center">
-    <div class="container container--narrow">
-        <div class="hero-section__box">
-            <h2>Search Patient <span>Reports</span></h2>
-        </div>
-
-        <div class="hero-section__search">
-            <form id='searchForm' class="form" action="{% url 'paitent' %}" method="get">
-                <div class="form__field">
-                    <label for="formInput#search">Search By Projects </label>
-                    <input class="input input--text" id="formInput#search" type="text" name="search_query"
-                        placeholder="Search by Patient Name" value="" />
-                </div>
-
-                <input class="btn btn--sub btn--lg" type="submit" value="Search" />
-            </form>
-        </div>
-    </div>
-</section>
- <!-- Table Part Start  -->
-<div class="container">
-    <br><br>
-    <a href="{% url 'bloodAnalysis' %}" class="btn btn--sub">Blood</a>
-    <a href="{% url 'urinAnalysis' %}" class="btn btn--sub">Urin</a>
-
-        <br><br>
-
-
-
-        <div style="overflow-x:auto;">
-            <h3>Total count ( HBG, RBC, WBC, PLT )</h3>
+      <div class="row">
+          <h1>Table</h1>
             <table class="content-table">
                 <thead>
                 <tr>
                     <th>Date</th>
-                    <th>Hemoglobin (/L)</th>
-                    <th>RBC ( x 10^12 /L)</th>
-                    <th>WBC ( x 10^9 /L)</th>
-                    <th>Platelates ( x 10^9 /L)</th>
-                    <td>View</td>
-        
-                    
+                    <th>Hemoglobin<br>(G/L)</th>
+                    <th>RBC<br>( x 10^12 /L)</th>
+                    <th>WBC<br>( x 10^9 /L)</th>
+                    <th>Platelates<br>( x 10^9 /L)</th>
+                    <td>View</td>                 
                 </tr>
                 </thead>
-                <tbody >
-                
+                <tbody >               
                     {% for p in pr1 %}
-                    <tr class="active-row">
-                        
+                    <tr class="active-row">                        
                         <td>{{  p.date }}</td>
                         <td>{{  p.hbg }}</td>
                         <td>{{  p.rbc }}</td>
                         <td>{{  p.wbc }}</td>
                         <td>{{  p.plt }}</td>
-                        <td>Show</td>
-                    
-                        
+                        <td>Show</td>                      
                     </tr>
                     {% endfor %}    
                 </tbody>
             </table>
-            
-        </div>
 
-    </div>
- <!-- Table Part End  -->
+      </div>
+   
 
-  <!-- Visualizayion Part Start  -->
+    <h4>Blood </h4>
+    <div class="row">
+        <div class="col-md-6 mb-3">
 
-{% comment %} <div class="iframebox"> {% endcomment %}
+          <div class="card h-100">
+            <div class="card-header">
+                <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+                Red blood cell
+            </div>
+   
+            <div class="card-body rbc" >
+                <canvas id="rbcChart"></canvas>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                //Red Blood Cell  Chart config
+        
+                const rbc = {
+        
+                    labels: [{% for p in pr1  %} {% if p.rbc > 0 %} '{{ p.date }}',{%endif%} {% endfor %}],
+                    datasets: [{
+                        label: 'Red Blood Cell ( x 10^12 /L)',
+                        data: [{% for p in pr1  %} {% if p.rbc > 0 %} {{ p.rbc }},{% endif %} {% endfor %}],
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 3
+                    }] 
+                };
 
-
-    <div class="chartCard">
-
-        <div class="chartBox">
-            <canvas id="myChart"></canvas>
-        </div>
-        <div class="chartBox">
-            <canvas id="lineChart"></canvas>
-        </div>
-
-        <div class="chartBox">
-            <canvas id="pieChart"></canvas>
-        </div>
-
-        <div class="chartBox">
-            <canvas id="pieChart1"></canvas>
-        </div>
-
-
-    </div>
-
-    {% comment %} <div class="chartCard">
-
-  
-    </div> {% endcomment %}
-
-
-
-    
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
-    <script>
-
-        // Hemuglobin data file
-        const data = {
-
-            labels: [{% for p in pr1  %} '{{ p.date }}', {% endfor %}],
-            datasets: [{
-                label: 'Hemoglobin',
-                data: [{% for p in pr1  %} {{ p.hbg }}, {% endfor %}],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 3
-            }] 
-        };
-
-
-
-        // Config bar chart
-        const config = {
-
-            type: 'line',
-                data,
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
+                 // doubleArbitraryLine Plugin
+                    const redDoubleArbitraryLine = {
+                        id: 'redDoubleArbitraryLine',
+                        beforeDraw(chart, args, options) {
+                            const { ctx, chartArea: { top, right, bottom, left, width, height },
+                            scales: { x,y } } = chart;
+                            ctx.save()
+                            console.log(ctx)
+                            
+                            // Success 
+                            ctx.strokeStyle = 'red',
+                            ctx.strokeRect(left, y.getPixelForValue(3.5), width, 0);
+                            ctx.restore();
+                            // Danger 
+                            ctx.strokeStyle = 'red',
+                            ctx.strokeRect(left, y.getPixelForValue(2), width, 0);
+                            ctx.restore();
                         }
                     }
-                }
+        
+        
+                const rbcconfig = {
+        
+                    type: 'bar',
+                        data: rbc,
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        },     
+                        plugins: [redDoubleArbitraryLine]
+                    };
 
-        };
-        //Render init Block
-
-        const myChart = new Chart(
-            document.getElementById('myChart'),
-            config
-        );
-
-
-
-
-
-        //Red Blood Cell  Chart config
-
-        const rbc = {
-
-            labels: [{% for p in pr1  %} '{{ p.date }}', {% endfor %}],
-            datasets: [{
-                label: 'Red Blood Cell',
-                data: [{% for p in pr1  %} {{ p.rbc }}, {% endfor %}],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 3
-            }] 
-        };
+        
+                const rbcChart = new Chart(
+                    document.getElementById('rbcChart'),
+                    rbcconfig
+                );
+            </script>
+          </div>
+        </div>
 
 
-        const config2 = {
 
-            type: 'line',
-                data: rbc,
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
+
+        <div class="col-md-6 mb-3">
+          <div class="card h-100">
+            <div class="card-header">
+              <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+              White blood cell
+            </div>
+            <div class="card-body wbc">
+                <canvas id="wbcChart"></canvas>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+            // White blood cell 
+        
+        
+                const wbc = {
+        
+                        labels: [{% for p in pr1  %} {% if p.wbc > 0 %} '{{ p.date }}',{%endif%} {% endfor %}],
+                        datasets: [{
+                            label: 'White Blood Cell ( x 10^9 /L )',
+                            data: [{% for p in pr1  %} {% if p.wbc > 0 %} {{ p.wbc }}, {%endif%} {% endfor %}],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 3
+                        }] 
+                    };
+        
+        
+                const wbcconfig = {
+        
+                    type: 'bar',
+                        data: wbc,
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
                         }
-                    }
-                }
+        
+                    };
+        
+                    const wbcChart = new Chart(
+                    document.getElementById('wbcChart'),
+                    wbcconfig
+                    );
+            </script>
+          </div>
+        </div>
+      </div>
 
-            };
-
-        const lineChart = new Chart(
-            document.getElementById('lineChart'),
-            config2
-        );
 
 
-        // White blood cell 
 
 
-        const da = {
-
-                labels: [{% for p in pr1  %} '{{ p.date }}', {% endfor %}],
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <div class="card h-100">
+            <div class="card-header">
+              <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+              Platelates blood cell
+            </div>
+            <div class="card-body plt">
+                <canvas id="pltChart"></canvas>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                const plt = {
+        
+                labels: [{% for p in pr1  %} {% if p.plt > 0 %} '{{ p.date }}' ,{% endif %} {% endfor %}],
                 datasets: [{
-                    label: 'White Blood Cell ( x 10^9 /L )',
-                    data: [{% for p in pr1  %} {{ p.wbc }}, {% endfor %}],
+                    label: 'Platelates (x 10^9 /L)',
+                    data: [{% for p in pr1  %} {% if p.plt > 0 %} {{ p.plt }} ,{% endif %} {% endfor %}],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
@@ -239,13 +238,13 @@
                     ],
                     borderWidth: 3
                 }] 
-            };
-
-
-        const config4 = {
-
-            type: 'line',
-                data: da,
+                };
+        
+        
+                const pltconfig = {
+        
+                type: 'bar',
+                data: plt,
                 options: {
                     scales: {
                         y: {
@@ -253,75 +252,77 @@
                         }
                     }
                 }
+        
+                };
+        
+                const pltChart = new Chart(
+                document.getElementById('pltChart'),
+                pltconfig
+                );
+            </script>
+          </div>
+        </div>
 
-            };
-
-            const pieChart = new Chart(
-            document.getElementById('pieChart'),
-            config4
-            );
-
-
-
-    // Platelates chart  chart
-
-
-    const da1 = {
-
-        labels: [{% for p in pr1  %} '{{ p.date }}', {% endfor %}],
-        datasets: [{
-            label: 'Platelates',
-            data: [{% for p in pr1  %} {{ p.plt }}, {% endfor %}],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 3
-        }] 
-        };
-
-
-        const config5 = {
-
-        type: 'bar',
-        data: da1,
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-
-        };
-
-        const pieChart1 = new Chart(
-        document.getElementById('pieChart1'),
-        config5
-        );
-
-
-
-
-
-
-    </script>
-
-
-{% comment %} </div> {% endcomment %}
-  <!-- Visualizayion Part End  -->
-
+        <div class="col-md-6 mb-3">
+          <div class="card h-100">
+            <div class="card-header">
+              <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+              Hemoglobin blood cell
+            </div>
+            <div class="card-body hbg">
+                <canvas id="hbChart"></canvas>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <script>
+                // Hemoglobin data file
+                const hbg = {
+    
+                    labels: [{% for p in pr1  %} {% if p.hbg > 0 %} '{{ p.date }}',{%endif%} {% endfor %}],
+                    datasets: [{
+                        label: 'Hemoglobin (G/L)',
+                        data: [{% for p in pr1  %} {% if p.hbg > 0 %} {{ p.hbg }},{%endif%} {% endfor %}],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 3
+                    }] 
+                };
+                // Config bar chart
+                const hbconfig = {
+                    type: 'bar',
+                        data:hbg,
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                };
+                //Render init Block
+    
+                const hbChart = new Chart(
+                    document.getElementById('hbChart'),
+                    hbconfig
+                );
+            </script>
+          </div>
+        </div>
+      </div>
+    </section>
+</main>
 
 {% endblock  %}

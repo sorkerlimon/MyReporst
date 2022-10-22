@@ -1,0 +1,37 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content  %}
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>Dashboard</h1>
+        <nav>
+           <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="">Home</a></li>
+              <li class="breadcrumb-item active">Gallery</li>
+              <li class="breadcrumb-item active">ESR Images</li>
+           </ol>
+        </nav>
+     </div>
+     <section class="section card-body pt-5">
+
+
+      <h4>Gallery</h4>
+      {% for p in esr_list %}
+      <a target="_blank" href="{{ p.image.url }}">
+      <div class="gallery" align='center'>
+          
+          <img src="{{ p.image.url }}" alt="Cinque Terre" style="width: 90px; height: 120px;" >
+          
+          <div class="desc">{{ p.testdate|slice:10 }}</div>
+      </div>
+    </a>
+      
+      {% endfor %}
+
+
+     </section>
+     
+</main>
+
+{% endblock  %}

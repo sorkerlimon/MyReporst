@@ -1,43 +1,49 @@
 {% extends 'main.html' %}
 {% load static %}
-
+<style>
+   .not-visible{
+       display: none;
+   }
+</style>
 {% block content  %}
-<div class="container">
-    <br><br>
-        <a href="{% url 'bloodImage' %}" class="btn btn--sub">Blood Image</a>
-        <a href="{% url 'urinImage' %}" class="btn btn--sub">Urin Image</a>
-        <a href="" class="btn btn--sub">Diabaties Image</a>
-        <a href="" class="btn btn--sub">X-Ray Image</a>
-    <br><br>
-    <div class=" ">
 
 
-        <form method = "post" enctype="multipart/form-data">
+<main id="main" class="main">
+    
+   <div class="pagetitle">
+      <h1>Profile</h1>
+      <nav>
+         <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="">Image Add</a></li>
+         
+         </ol>
+      </nav>
+   </div>
+   <br><br><br><br>
+   <section class="section profile">
+      {% for message in messages %}
+      <div class="container-fluid p-0">
+        <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="True">&times;</span>
+          </button>
+          {{ message }}
+        </div>
+      </div>
+      {% endfor %}
+       <div class="container">
+         <form method = "post" enctype="multipart/form-data" id="upload_form">
             {% csrf_token %}
             {{ form.as_p  }}
-            <br>
-            <button type="submit" class="btn btn--sub">Upload</button>
+          
+            <button type="submit" class="button btn btn-primary">Upload</button>
         </form>
-    </div>
-
-    <br><br>
-
-
-    <div class="">
-    
-        {% for p in pr %}
-        <h5 class="hospital_name">Hospital Name: {{ p.name }} </h5>
         <br>
-        <img src="{{ p.image.url }}" alt="This for image" height="500" width="450" />
-        <br>
-        <br>
-        <br>
-        
-        {% endfor %}
-    
-    </div>
-    <br><br>
+       </div>
+   </div>
+   </section>
 
-</div>
+</main>
 
 {% endblock  %}

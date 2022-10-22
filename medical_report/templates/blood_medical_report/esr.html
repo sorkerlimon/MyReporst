@@ -1,0 +1,166 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block content  %}
+
+
+<main id="main" class="main">
+    <div class="pagetitle">
+       <h1>Erythrocyte Sedimentation Rate (ESR)</h1>
+       <nav>
+          <ol class="breadcrumb">
+             <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Home</a></li>
+             <li class="breadcrumb-item active">ESR</li>
+          </ol>
+       </nav>
+    </div>
+    <section class="section dashboard">
+       <div class="row">
+          <div class="col-lg-12">
+
+                <div class="col-12">
+                   <div class="card recent-sales overflow-auto">
+                      <div class="card-body">
+                         <h5 class="card-title">Erythrocyte Sedimentation Rate (ESR) Table </h5>
+                         <form method="POST" action="{% url 'esr_' %}">
+                           {% csrf_token %}
+                         <table class="table table-borderless datatable">
+                            <thead>
+                               <tr>
+                                  <th scope="col">Select</th>
+                                  <th scope="col">Date of Test</th>
+                                  <th scope="col">Date of Upload</th>
+                                  <th scope="col">View Report</th>
+                                  <th scope="col">View Chart</th>
+                                  <th scope="col">Status</th>
+                               </tr>
+                            </thead>
+                            <tbody>
+                              {% for p in esr_list %}
+                               <tr>
+                                  <td> <input type="checkbox"  name="tag" value={{ p.image_id }} /> </td>
+                                  <td>{{  p.testdate|date:"Y/m/d" }}</td>
+                                  <td>{{  p.uploaddate|date:"Y/m/d" }}</td>
+                                  <td><a href="{{ p.image.url }}" class="text-primary">Show</a></td>
+                                  <td><a href="{% url 'esr_analysis' p.image_id %}" class="text-primary">Analysis</a></td>
+                                  <td><span class="badge bg-success">Approved</span></td>
+
+                               </tr>
+                               {% endfor %}  
+                            </tbody>
+                         </table>
+                         <select  name="valu1">   
+
+                           <option value="esr"> ESR </option>
+                           
+                         </select>
+                         <br>
+                         <br>
+                         <button type="submit" class="btn btn-info">Submit</button>
+                        </form>
+                      </div>
+                   </div>
+                </div>
+
+               <!--Comparision table started-->
+               <div class="col-lg-12">
+                  <div class="col-12" >
+                     <div class="card recent-sales overflow-auto">
+                                   
+                        <div class="card-body">
+                           <h5 class="card-title" style= "text-align: center";>Comparision Table Erythrocyte Sedimentation Rate (ESR) </h5>
+                        </div>
+                 
+                        <div class="card-body rbc">
+                        <canvas id="esrChart"></canvas>
+                        </div>
+                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                        <script>
+                        //Red Blood Cell  Chart config
+                               
+                        const esr = {
+                               
+                           labels: [{% for p in date_  %}  '{{ p|date:"Y/m/d" }}',{% endfor %}],
+                                 datasets: [{
+                                    label: 'Comparision Graph {{ check_values1 }} RF: Male (1–13), Female (1–20) mm/hr',
+                                       data: [{% for p in data  %}  {{ p }}, {% endfor %}],
+                                               backgroundColor: [
+                                                   'rgba(75, 192, 192, 0.2)',
+                                                   'rgba(255, 99, 132, 0.2)',
+                                                   'rgba(54, 162, 235, 0.2)',
+                                                   'rgba(255, 206, 86, 0.2)',
+                                                   'rgba(153, 102, 255, 0.2)',
+                                                   'rgba(255, 159, 64, 0.2)'
+                                               ],
+                                               borderColor: [
+                                                   'rgba(255, 99, 132, 1)',
+                                                   'rgba(54, 162, 235, 1)',
+                                                   'rgba(255, 206, 86, 1)',
+                                                   'rgba(75, 192, 192, 1)',
+                                                   'rgba(153, 102, 255, 1)',
+                                                   'rgba(255, 159, 64, 1)'
+                                               ],
+                                               borderWidth: 3
+                                           }] 
+                                       };
+                       
+                                         // doubleArbitraryLine Plugin
+                                           const esrredDoubleArbitraryLine = {
+                                               id: 'esrredDoubleArbitraryLine',
+                                               beforeDraw(chart, args, options) {
+                                                   const { ctx, chartArea: { top, right, bottom, left, width, height },
+                                                   scales: { x,y } } = chart;
+                                                   ctx.save()
+                                                   console.log(ctx)
+                                                   
+                                                   // Success 
+                                                   ctx.strokeStyle = 'red',
+                                                   ctx.strokeRect(left, y.getPixelForValue({{ref_val_highest}}), width, 1.7);
+                                                   ctx.restore();
+                                                   // Danger 
+                                                   ctx.strokeStyle = 'blue',
+                                                   ctx.strokeRect(left, y.getPixelForValue({{ref_val_lowest}}), width, 1);
+                                                   ctx.restore();
+                                               }
+                                           }
+                               
+                               
+                                       const esrconfig = {
+                               
+                                           type: 'bar',
+                                               data: esr,
+                                               options: {
+                                                   scales: {
+                                                       y: {
+                                                           beginAtZero: true
+                                                       }
+                                                   }
+                                               },     
+                                               plugins: [esrredDoubleArbitraryLine]
+                                           };
+                       
+                               
+                                       const esrChart = new Chart(
+                                           document.getElementById('esrChart'),
+                                           esrconfig
+                                       );
+                                   </script>
+                                 </div>
+                               </div>
+                           
+                              </div>
+                           </div>
+                     </div>
+                     <!--Comparision table Ended-->
+
+             </div>
+          </div>
+
+       </div>
+    </section>
+ </main>
+
+
+
+
+{% endblock  %}
