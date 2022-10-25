@@ -91,8 +91,33 @@
 
                     <th>Hemoglobin</th>
                     {% if  p.hbg is not None and p.hbg > -1 %}
-                        <td class="cell-highlight-red">{{  p.hbg }}</td>
+                        {% if profile.gender == "male" %}   
+                            {% if p.hbg < 130 or p.hbg > 180 %}
+                                <td class="cell-highlight-red">{{  p.hbg }}</td>
+                            {% elif p.hbg >= 130 and p.hbg <= 140 %} 
+                                <td class="cell-highlight-yellow">{{  p.hbg }}</td>
+                            {% elif p.hbg <= 180 and p.hbg >= 170 %} 
+                                <td class="cell-highlight-yellow">{{  p.hbg }}</td>
+                            {% else %}
+                                <td class="cell-highlight-green">{{  p.hbg }}</td>
+                            {% endif %}
+
+                        {% elif profile.gender == 'female' %}
+                            {% if p.hbg < 110 or p.hbg > 160 %}
+                                <td class="cell-highlight-red">{{  p.hbg }}</td>
+                            {% elif p.hbg >= 110 and p.hbg <= 120 %} 
+                                <td class="cell-highlight-yellow">{{  p.hbg }}</td>
+                            {% elif p.hbg <= 160 and p.hbg >= 150 %} 
+                                <td class="cell-highlight-yellow">{{  p.hbg }}</td>
+                            {% else %}
+                                <td class="cell-highlight-green">{{  p.hbg }}</td>
+                            {% endif %}
                         {% else %}
+                            <td >{{  p.hbg }}</td>
+
+
+                        {% endif %}
+                    {% else %}
                         <td>Value Not Availabale </td>
                     {% endif %}
                     
@@ -104,8 +129,34 @@
 
                     <th>Red Blood cell</th>
                     {% if  p.rbc is not None and p.rbc > -1 %}
-                        <td class="cell-highlight-green">{{  p.rbc }}</td>
+                        {% if profile.gender == "male" %}   
+                            {% if p.rbc < 4.2 or p.rbc > 5.8 %}
+                                <td class="cell-highlight-red">{{  p.rbc }}</td>
+                            {% elif p.rbc >= 4.2 and p.rbc <= 4.6 %} 
+                                <td class="cell-highlight-yellow">{{  p.rbc }}</td>
+                            {% elif p.rbc <= 5.8 and p.rbc >= 5.4 %} 
+                                <td class="cell-highlight-yellow">{{  p.rbc }}</td>
+                            {% else %}
+                                <td class="cell-highlight-green">{{  p.rbc }}</td>
+                            {% endif %}
+
+                        {% elif profile.gender == "female" %}   
+                            {% if p.rbc < 3.8 or p.rbc > 5.0 %}
+                                <td class="cell-highlight-red">{{  p.rbc }}</td>
+                            {% elif p.rbc >= 3.8 and p.rbc <= 4.2 %} 
+                                <td class="cell-highlight-yellow">{{  p.rbc }}</td>
+                            {% elif p.rbc <= 5.0 and p.rbc >= 4.6 %} 
+                                <td class="cell-highlight-yellow">{{  p.rbc }}</td>
+                            {% else %}
+                                <td class="cell-highlight-green">{{  p.rbc }}</td>
+                            {% endif %}
+
                         {% else %}
+                            <td >{{  p.rbc }}</td>
+
+
+                        {% endif %}
+                    {% else %}
                         <td>Value Not Availabale </td>
                     {% endif %}
                 
@@ -116,9 +167,18 @@
                   <tr>
 
                     <th>White Blood Cell</th>
-                    {% if  p.wbc is not None and p.wbc > -1 %}
-                        <td class="cell-highlight-yellow">{{  p.wbc }}</td>
-                        {% else %}
+                    {% if  p.wbc is not None and p.wbc > -1 %} 
+                            {% if p.wbc < 4.2 or p.wbc > 11.0 %}
+                                <td class="cell-highlight-red">{{  p.wbc }}</td>
+                            {% elif p.wbc >= 4.2 and p.wbc <= 5.2 %} 
+                                <td class="cell-highlight-yellow">{{  p.wbc }}</td>
+                            {% elif p.wbc <= 11.0 and p.wbc >= 10.0 %} 
+                                <td class="cell-highlight-yellow">{{  p.wbc }}</td>
+                            {% else %}
+                                <td class="cell-highlight-green">{{  p.wbc }}</td>
+                            {% endif %}
+
+                    {% else %}
                         <td>Value Not Availabale </td>
                     {% endif %}
                     <td>10<sup>9</sup>/L</td>
@@ -128,9 +188,18 @@
                   <tr>
 
                     <th>Platelates Cell</th>
-                    {% if  p.plt is not None and p.plt > -1 %}
-                        <td >{{  p.plt }}</td>
-                        {% else %}
+                    {% if  p.plt is not None and p.plt > -1 %} 
+                            {% if p.plt < 150 or p.plt > 450 %}
+                                <td class="cell-highlight-red">{{  p.plt }}</td>
+                            {% elif p.plt >= 150 and p.plt <= 200 %} 
+                                <td class="cell-highlight-yellow">{{  p.plt }}</td>
+                            {% elif p.plt <= 450 and p.plt >= 400 %} 
+                                <td class="cell-highlight-yellow">{{  p.plt }}</td>
+                            {% else %}
+                                <td class="cell-highlight-green">{{  p.plt }}</td>
+                            {% endif %}
+
+                    {% else %}
                         <td>Value Not Availabale </td>
                     {% endif %}
                     <td>10<sup>9</sup> /L</td>
@@ -147,11 +216,20 @@
                   <tr>
 
                     <th>Absolute Neutrophil</th>
-                        {% if  p.neutrophil is not None and p.neutrophil > -1 %}
-                            <td>{{  p.neutrophil }}</td>
-                        {% else %}
-                            <td>Value Not Availabale </td>
-                        {% endif %}
+                    {% if  p.neutrophil is not None and p.neutrophil > -1 %} 
+                            {% if p.neutrophil < 2.0 or p.neutrophil > 6.5 %}
+                                <td class="cell-highlight-red">{{  p.neutrophil }}</td>
+                            {% elif p.neutrophil >= 2.0 and p.neutrophil <= 2.5 %} 
+                                <td class="cell-highlight-yellow">{{  p.neutrophil }}</td>
+                            {% elif p.neutrophil <= 6.5 and p.neutrophil >= 6.0 %} 
+                                <td class="cell-highlight-yellow">{{  p.neutrophil }}</td>
+                            {% else %}
+                                <td class="cell-highlight-green">{{  p.neutrophil }}</td>
+                            {% endif %}
+
+                    {% else %}
+                        <td>Value Not Availabale </td>
+                    {% endif %}
                     <td>10<sup>9</sup>/L</td>
                     <td>Male & Female (2.0 - 6.5)</td>
 
@@ -160,11 +238,20 @@
                   <tr>
 
                     <th>Absolute Lymphocyte</th>
-                    {% if  p.lymphocyte is not None and p.lymphocyte > -1 %}
-                         <td>{{  p.lymphocyte }}</td>
+                    {% if  p.lymphocyte is not None and p.lymphocyte > -1 %} 
+                            {% if p.lymphocyte < 1.0 or p.lymphocyte > 4.8 %}
+                                <td class="cell-highlight-red">{{  p.lymphocyte }}</td>
+                            {% elif p.lymphocyte >= 1.0 and p.lymphocyte <= 1.5 %} 
+                                <td class="cell-highlight-yellow">{{  p.lymphocyte }}</td>
+                            {% elif p.lymphocyte <= 4.8 and p.lymphocyte >= 4.3 %} 
+                                <td class="cell-highlight-yellow">{{  p.lymphocyte }}</td>
+                            {% else %}
+                                <td class="cell-highlight-green">{{  p.lymphocyte }}</td>
+                            {% endif %}
+
                     {% else %}
-                         <td>Value Not Availabale </td>
-                      {% endif %}
+                        <td>Value Not Availabale </td>
+                    {% endif %}
                     <td> 10<sup>9</sup>/L</td>
                     <td>Male & Female (1.0 - 4.8)</td>
 
@@ -173,9 +260,18 @@
                     
 
                     <th>Absolute Monocyte</th>
-                    {% if  p.monocyte is not None and p.monocyte > -1 %}
-                        <td class="cell-highlight">{{  p.monocyte }}</td>
-                        {% else %}
+                    {% if  p.monocyte is not None and p.monocyte > -1 %} 
+                            {% if p.monocyte < 0.2 or p.monocyte > 0.8 %}
+                                <td class="cell-highlight-red">{{  p.monocyte }}</td>
+                            {% elif p.monocyte >= 0.2 and p.monocyte <= 0.35 %} 
+                                <td class="cell-highlight-yellow">{{  p.monocyte }}</td>
+                            {% elif p.monocyte <= 0.8 and p.monocyte >= 0.65 %} 
+                                <td class="cell-highlight-yellow">{{  p.monocyte }}</td>
+                            {% else %}
+                                <td class="cell-highlight-green">{{  p.monocyte }}</td>
+                            {% endif %}
+
+                    {% else %}
                         <td>Value Not Availabale </td>
                     {% endif %}
                     
@@ -186,12 +282,21 @@
                   <tr>
 
                     <th>Absolute Eosinophil</th>
-                  
-                    {% if  p.eosinophil is not None and p.eosinophil > -1 %}
-                        <td>{{  p.eosinophil }}</td>
-                        {% else %}
+                    {% if  p.eosinophil is not None and p.eosinophil > -1 %} 
+                            {% if p.eosinophil < 0.0 or p.eosinophil > 0.5 %}
+                                <td class="cell-highlight-red">{{  p.eosinophil }}</td>
+                            {% elif p.eosinophil >= 0.0 and p.eosinophil <= 0.1 %} 
+                                <td class="cell-highlight-yellow">{{  p.eosinophil }}</td>
+                            {% elif p.eosinophil <= 0.5 and p.eosinophil >= 0.4 %} 
+                                <td class="cell-highlight-yellow">{{  p.eosinophil }}</td>
+                            {% else %}
+                                <td class="cell-highlight-green">{{  p.eosinophil }}</td>
+                            {% endif %}
+
+                    {% else %}
                         <td>Value Not Availabale </td>
                     {% endif %}
+
                     <td>10<sup>9</sup>/L</td>
                     <td>Male & Female ( < 0.5)</td>
 
@@ -199,9 +304,18 @@
                   <tr>
 
                     <th>Absolute Basophil</th>                
-                    {% if  p.basophil is not None and p.basophil > -1 %}
-                        <td>{{  p.basophil }}</td>
-                        {% else %}
+                    {% if  p.basophil is not None and p.basophil > -1 %} 
+                            {% if p.basophil < 0.0 or p.basophil > 0.25 %}
+                                <td class="cell-highlight-red">{{  p.basophil }}</td>
+                            {% elif p.basophil >= 0.0 and p.basophil <= 0.05 %} 
+                                <td class="cell-highlight-yellow">{{  p.basophil }}</td>
+                            {% elif p.basophil <= 0.25 and p.basophil >= 0.20 %} 
+                                <td class="cell-highlight-yellow">{{  p.basophil }}</td>
+                            {% else %}
+                                <td class="cell-highlight-green">{{  p.basophil }}</td>
+                            {% endif %}
+
+                    {% else %}
                         <td>Value Not Availabale </td>
                     {% endif %}
                     <td>10<sup>9</sup>/L</td>
@@ -217,40 +331,97 @@
                                   {% for p in pr3  %}
                                   <tr>
                                     <th>Differential Neutrophil</th>
-                                    
-                                    <td>{{  p.neutrophil2 }}</td>
-                                   
+                                    {% if  p.neutrophil2 is not None and p.neutrophil2 > -1 %} 
+                                            {% if p.neutrophil2 < 40 or p.neutrophil2 > 75 %}
+                                                <td class="cell-highlight-red">{{  p.neutrophil2 }}</td>
+                                            {% elif p.neutrophil2 >= 40 and p.neutrophil2 <= 45 %} 
+                                                <td class="cell-highlight-yellow">{{  p.neutrophil2 }}</td>
+                                            {% elif p.neutrophil2 <= 75 and p.neutrophil2 >= 70 %} 
+                                                <td class="cell-highlight-yellow">{{  p.neutrophil2 }}</td>
+                                        {% else %}
+                                            <td class="cell-highlight-green">{{  p.neutrophil2 }}</td>
+                                    {% endif %}
+        
+                                    {% else %}
+                                        <td>Value Not Availabale </td>
+                                    {% endif %}
                                     <td> % </td>
                                     <td>Male & Female ( 40% - 75%)</td>
                                   </tr>
                                   <tr>
                                     <th>Differential Lymphocyte</th>
-                                
-                                    <td>{{  p.lymphocyte2 }}</td>
-                                  
+                                    {% if  p.lymphocyte2 is not None and p.lymphocyte2 > -1 %} 
+                                            {% if p.lymphocyte2 < 20 or p.lymphocyte2 > 50 %}
+                                                <td class="cell-highlight-red">{{  p.lymphocyte2 }}</td>
+                                            {% elif p.lymphocyte2 >= 20 and p.lymphocyte2 <= 25 %} 
+                                                <td class="cell-highlight-yellow">{{  p.lymphocyte2 }}</td>
+                                            {% elif p.lymphocyte2 <= 50 and p.lymphocyte2 >= 45 %} 
+                                                <td class="cell-highlight-yellow">{{  p.lymphocyte2 }}</td>
+                                        {% else %}
+                                            <td class="cell-highlight-green">{{  p.lymphocyte2 }}</td>
+                                    {% endif %}
+        
+                                    {% else %}
+                                        <td>Value Not Availabale </td>
+                                    {% endif %}
                                     <td> % </td>
                                     <td>Male & Female ( 20% - 50%)</td>
                                   </tr>
                                   <tr>
                                     <th>Differential Monocyte %</th>
-                                  
-                                    <td class="cell-highlight">{{  p.monocyte2 }}</td>
-                                   
+                                    {% if  p.monocyte2 is not None and p.monocyte2 > -1 %} 
+                                            {% if p.monocyte2 < 2.0 or p.monocyte2 > 8.0 %}
+                                                <td class="cell-highlight-red">{{  p.monocyte2 }}</td>
+                                            {% elif p.monocyte2 >= 2.0 and p.monocyte2 <= 3.0 %} 
+                                                <td class="cell-highlight-yellow">{{  p.monocyte2 }}</td>
+                                            {% elif p.monocyte2 <= 8.0 and p.monocyte2 >= 7.0 %} 
+                                                <td class="cell-highlight-yellow">{{  p.monocyte2 }}</td>
+                                        {% else %}
+                                            <td class="cell-highlight-green">{{  p.monocyte2 }}</td>
+                                    {% endif %}
+        
+                                    {% else %}
+                                        <td>Value Not Availabale </td>
+                                    {% endif %}
                                     <td> % </td>
                                     <td>Male & Female ( 2% - 8%)</td>
                                   </tr>
                                   <tr>
                                     <th>Differential Eosinophil</th>
-                                    
-                                    <td >{{  p.eosinophil2 }}</td>
+                                    {% if  p.eosinophil2 is not None and p.eosinophil2 > -1 %} 
+                                            {% if p.eosinophil2 < 1.0 or p.eosinophil2 > 5.0 %}
+                                                <td class="cell-highlight-red">{{  p.eosinophil2 }}</td>
+                                            {% elif p.eosinophil2 >= 1.0 and p.eosinophil2 <= 2.0 %} 
+                                                <td class="cell-highlight-yellow">{{  p.eosinophil2 }}</td>
+                                            {% elif p.eosinophil2 <= 5.0 and p.eosinophil2 >= 4.0 %} 
+                                                <td class="cell-highlight-yellow">{{  p.eosinophil2 }}</td>
+                                        {% else %}
+                                            <td class="cell-highlight-green">{{  p.eosinophil2 }}</td>
+                                    {% endif %}
+        
+                                    {% else %}
+                                        <td>Value Not Availabale </td>
+                                    {% endif %}
                               
                                     <td> % </td>
                                     <td>Male & Female ( 1% - 5%)</td>
                                   </tr>
                                   <tr>
                                     <th>Differential Basophil</th>
-                         
-                                    <td >{{  p.basophil2 }}</td>
+                                    {% if  p.basophil2 is not None and p.basophil2 > -1 %} 
+                                            {% if p.basophil2 < 0.0 or p.basophil2 > 1.0 %}
+                                                <td class="cell-highlight-red">{{  p.basophil2 }}</td>
+                                            {% elif p.basophil2 >= 0.0 and p.basophil2 <= 0.1 %} 
+                                                <td class="cell-highlight-yellow">{{  p.basophil2 }}</td>
+                                            {% elif p.basophil2 <= 1.0 and p.basophil2 >= 0.9 %} 
+                                                <td class="cell-highlight-yellow">{{  p.basophil2 }}</td>
+                                        {% else %}
+                                            <td class="cell-highlight-green">{{  p.basophil2 }}</td>
+                                    {% endif %}
+        
+                                    {% else %}
+                                        <td>Value Not Availabale </td>
+                                    {% endif %}
                                   
                                     <td> % </td>
                                     <td>Male & Female ( < 1%)</td>
@@ -262,8 +433,36 @@
                                                   {% for p in pr4  %}
                                                   <tr>
                                                     <th>Hematocrit (PCV)</th>
-                                                    
-                                                    <td>{{  p.pcv }}</td>
+                                                    {% if  p.pcv is not None and p.pcv > -1 %}
+                                                    {% if profile.gender == "male" %}   
+                                                        {% if p.pcv < 40 or p.pcv > 50 %}
+                                                            <td class="cell-highlight-red">{{  p.pcv }}</td>
+                                                        {% elif p.pcv >= 40 and p.pcv <= 42 %} 
+                                                            <td class="cell-highlight-yellow">{{  p.pcv }}</td>
+                                                        {% elif p.pcv <= 50 and p.pcv >= 48 %} 
+                                                            <td class="cell-highlight-yellow">{{  p.pcv }}</td>
+                                                        {% else %}
+                                                            <td class="cell-highlight-green">{{  p.pcv }}</td>
+                                                        {% endif %}
+                            
+                                                    {% elif profile.gender == 'female' %}
+                                                        {% if p.pcv < 36 or p.pcv > 46 %}
+                                                            <td class="cell-highlight-red">{{  p.pcv }}</td>
+                                                        {% elif p.pcv >= 36 and p.pcv <= 38 %} 
+                                                            <td class="cell-highlight-yellow">{{  p.pcv }}</td>
+                                                        {% elif p.pcv <= 46 and p.pcv >= 44 %} 
+                                                            <td class="cell-highlight-yellow">{{  p.pcv }}</td>
+                                                        {% else %}
+                                                            <td class="cell-highlight-green">{{  p.pcv }}</td>
+                                                        {% endif %}
+                                                    {% else %}
+                                                        <td >{{  p.hbg }}</td>
+                            
+                            
+                                                    {% endif %}
+                                                {% else %}
+                                                    <td>Value Not Availabale </td>
+                                                {% endif %}
                                                   
                                                     <td> % </td>
                                                     <td>Male (40 - 50) & Female (36 - 46)</td>
@@ -271,15 +470,41 @@
                                                   <tr>
                                                     <th>Mean Corpuscular Volume ( MCV )</th>
                                                 
-                                                    <td>{{  p.mcv }}</td>
-                                                   
+                                                    {% if  p.mcv is not None and p.mcv > -1 %} 
+                                                        {% if p.mcv < 80.0 or p.mcv > 98.0 %}
+                                                            <td class="cell-highlight-red">{{  p.mcv }}</td>
+                                                        {% elif p.mcv >= 80.0 and p.mcv <= 84.0 %} 
+                                                            <td class="cell-highlight-yellow">{{  p.mcv }}</td>
+                                                        {% elif p.mcv <= 98.0 and p.mcv >= 94.0 %} 
+                                                            <td class="cell-highlight-yellow">{{  p.mcv }}</td>
+                                                    {% else %}
+                                                    <td class="cell-highlight-green">{{  p.mcv }}</td>
+                                                    {% endif %}
+                        
+                                                    {% else %}
+                                                        <td>Value Not Availabale </td>
+                                                    {% endif %}
+                                                        
                                                     <td> fL</td>
                                                     <td>Male %% Female (80 - 98)</td>
                                                   </tr>
                                                   <tr>
                                                     <th>Mean Corpuscular Hemoglobin ( MCH )</th>
                                                    
-                                                    <td class="cell-highlight">{{  p.mch }}</td>
+                                                    {% if  p.mch is not None and p.mch > -1 %} 
+                                                        {% if p.mch < 1.65 or p.mch > 2.0 %}
+                                                            <td class="cell-highlight-red">{{  p.mch }}</td>
+                                                        {% elif p.mch >= 1.65 and p.mch <= 1.75 %} 
+                                                            <td class="cell-highlight-yellow">{{  p.mch }}</td>
+                                                        {% elif p.mch <= 2.0 and p.mch >= 1.9 %} 
+                                                            <td class="cell-highlight-yellow">{{  p.mch }}</td>
+                                                    {% else %}
+                                                    <td class="cell-highlight-green">{{  p.mch }}</td>
+                                                    {% endif %}
+                        
+                                                    {% else %}
+                                                        <td>Value Not Availabale </td>
+                                                    {% endif %}
                                                    
                                                     <td> fmol </td>
                                                     <td>Male & Female (1.65 - 2)</td>
@@ -287,15 +512,41 @@
                                                   <tr>
                                                     <th> Mean Corpuscular Hemoglobin Concentration</th>
                                                 
-                                                    <td >{{  p.mchc }}</td>
+                                                    {% if  p.mchc is not None and p.mchc > -1 %} 
+                                                        {% if p.mchc < 18.6 or p.mchc > 22.3 %}
+                                                            <td class="cell-highlight-red">{{  p.mchc }}</td>
+                                                        {% elif p.mchc >= 18.6 and p.mchc <= 19.5 %} 
+                                                            <td class="cell-highlight-yellow">{{  p.mchc }}</td>
+                                                        {% elif p.mchc <= 22.3 and p.mchc >= 21.0 %} 
+                                                            <td class="cell-highlight-yellow">{{  p.mchc }}</td>
+                                                    {% else %}
+                                                    <td class="cell-highlight-green">{{  p.mchc }}</td>
+                                                    {% endif %}
+                        
+                                                    {% else %}
+                                                        <td>Value Not Availabale </td>
+                                                    {% endif %}
                                               
                                                     <td>mmol/L</td>
                                                     <td>Male & Female (18.6 - 22.3)</td>
                                                   </tr>
                                                   <tr>
                                                     <th>Red cell distribution width (RDW)</th>
-                                               
-                                                    <td >{{  p.rdw }}</td>
+                                                
+                                                    {% if  p.rdw is not None and p.rdw > -1 %} 
+                                                        {% if p.rdw < 11.5 or p.rdw > 15 %}
+                                                            <td class="cell-highlight-red">{{  p.rdw }}</td>
+                                                        {% elif p.rdw >= 11.5 and p.rdw <= 12.5 %} 
+                                                            <td class="cell-highlight-yellow">{{  p.rdw }}</td>
+                                                        {% elif p.rdw <= 15.0 and p.rdw >= 14.0 %} 
+                                                            <td class="cell-highlight-yellow">{{  p.rdw }}</td>
+                                                    {% else %}
+                                                    <td class="cell-highlight-green">{{  p.rdw }}</td>
+                                                    {% endif %}
+                        
+                                                    {% else %}
+                                                        <td>Value Not Availabale </td>
+                                                    {% endif %}
                                                
                                                     <td> % </td>
                                                     <td>Male & Female (11.5 - 15)</td>
@@ -308,8 +559,20 @@
                                                                                                   {% for p in pr5  %}
                                                                                                   <tr>
                                                                                                     <th>Plateletcrit ( PCT )</th>
-                                                                                                   
-                                                                                                    <td>{{  p.pct }}</td>
+                                                                                                    {% if  p.pct is not None and p.pct > -1 %} 
+                                                                                                        {% if p.pct < 0.2 or p.pct > 0.5 %}
+                                                                                                            <td class="cell-highlight-red">{{  p.pct }}</td>
+                                                                                                        {% elif p.pct >= 0.2 and p.pct <= 0.29 %} 
+                                                                                                            <td class="cell-highlight-yellow">{{  p.pct }}</td>
+                                                                                                        {% elif p.pct <= 0.5 and p.pct >= 0.4 %} 
+                                                                                                            <td class="cell-highlight-yellow">{{  p.pct }}</td>
+                                                                                                        {% else %}
+                                                                                                        <td class="cell-highlight-green">{{  p.pct }}</td>
+                                                                                                    {% endif %}
+                                                                        
+                                                                                                    {% else %}
+                                                                                                        <td>Value Not Availabale </td>
+                                                                                                    {% endif %}
                                                                                                   
                                                                                                     <td> % </td>
                                                                                                     <td>Male & Female (0.2 - 0.5)</td>
@@ -317,7 +580,20 @@
                                                                                                   <tr>
                                                                                                     <th>Mean Platelet Volume ( MPV )</th>
                                                                                                   
-                                                                                                    <td>{{  p.mpv }}</td>
+                                                                                                    {% if  p.mpv is not None and p.mpv > -1 %} 
+                                                                                                    {% if p.mpv < 7.0 or p.mpv > 12.0 %}
+                                                                                                        <td class="cell-highlight-red">{{  p.mpv }}</td>
+                                                                                                    {% elif p.mpv >= 7.0 and p.mpv <= 8.0 %} 
+                                                                                                        <td class="cell-highlight-yellow">{{  p.mpv }}</td>
+                                                                                                    {% elif p.mpv <= 12.0 and p.mpv >= 11.0 %} 
+                                                                                                        <td class="cell-highlight-yellow">{{  p.mpv }}</td>
+                                                                                                    {% else %}
+                                                                                                    <td class="cell-highlight-green">{{  p.mpv }}</td>
+                                                                                                {% endif %}
+                                                                    
+                                                                                                {% else %}
+                                                                                                    <td>Value Not Availabale </td>
+                                                                                                {% endif %}
                                                                                                   
                                                                                                     <td> fL </td>
                                                                                                     <td>Male & Female (7.0 - 12.0)</td>
@@ -325,7 +601,22 @@
                                                                                                   <tr>
                                                                                                     <th>Platelet Distribution Width ( PDW )</th>
                                                                                                    
-                                                                                                    <td class="cell-highlight">{{  p.pdw }}</td>
+    
+                                                                                                    {% if  p.pdw is not None and p.pdw > -1 %} 
+                                                                                                        {% if p.pdw < 10.0 or p.pdw > 17.9 %}
+                                                                                                            <td class="cell-highlight-red">{{  p.pdw }}</td>
+                                                                                                        {% elif p.pdw >= 10.0 and p.pdw <= 13.0 %} 
+                                                                                                            <td class="cell-highlight-yellow">{{  p.pdw }}</td>
+                                                                                                        {% elif p.pdw <= 17.9 and p.pdw >= 16.0 %} 
+                                                                                                            <td class="cell-highlight-yellow">{{  p.pdw }}</td>
+                                                                                                    {% else %}
+                                                                                                    <td class="cell-highlight-green">{{  p.pdw }}</td>
+                                                                                                    {% endif %}
+                                                                        
+                                                                                                    {% else %}
+                                                                                                        <td>Value Not Availabale </td>
+                                                                                                    {% endif %}
+                                                                                                    
                                                                                                   
                                                                                                     <td> % </td>
                                                                                                     <td>Male & Female (10.0 - 17.9)</td>
