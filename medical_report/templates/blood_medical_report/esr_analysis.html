@@ -16,95 +16,99 @@
      </div>
      <section class="section card-body pt-5">
 
-    <h4>Blood </h4>
-    <div class="row">
-        <div class="col-md-6 mb-3">
+            <h4>Blood </h4>
+            <div class="row">
+                <div class="col-md-6 mb-3">
 
-          <div class="card h-100">
-            <div class="card-header">
-                <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
-                esr blood cell
-            </div>
-   
-            <div class="card-body esr" >
-                <canvas id="esrChart"></canvas>
-            </div>
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-            <script>
-                //Red Blood Cell  Chart config
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <span class="me-2"><i class="bi bi-bar-chart-fill"></i></span>
+                            ESR (mm in 1st hour)
+                        </div>
         
-                const esr = {
-        
-                    labels: [{% for p in pr1  %} {% if p.esr > 0 %} '{{ p.date }}',{%endif%} {% endfor %}],
-                    datasets: [{
-                        label: 'esr Blood Cell ( x 10^12 /L)',
-                        data: [{% for p in pr1  %} {% if p.esr > 0 %} {{ p.esr }},{% endif %} {% endfor %}],
-                        backgroundColor: [
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
-                        borderWidth: 3
-                    }] 
-                };
+                        {% for p in pr1 %} {% if p.esr > -1%}
+            
+                        <div class="card-body esr" >
+                            <canvas id="esrChart"></canvas>
+                        </div>
+                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                        <script>
+                            //Red Blood Cell  Chart config
+                    
+                            const esr = {
+                    
+                                labels: [{% for p in pr1  %} '{{ prof.testdate }}', {% endfor %}],
+                                datasets: [{
+                                    label: 'Male ( < 10) & Female (< 20)',
+                                    data: [{% for p in pr1  %} {{ p.esr }}, {% endfor %}],
+                                            backgroundColor: [
+                                            {% if profile.gender == "male" %}
+                                                {% if 0 <= p.esr and p.esr <= 10 %}'rgba(50, 255, 50, 0.2)' {%else%} 'rgba(255, 50, 50, 0.2)'{%endif%}
+                                            {%else%}
+                                                {% if 0 <= p.esr and p.esr <= 20 %}'rgba(50, 255, 50, 0.2)' {%else%} 'rgba(255, 50, 50, 0.2)'{%endif%}
+                                            {%endif%}
 
-                 // doubleArbitraryLine Plugin
-                    const esrDoubleArbitraryLine = {
-                        id: 'esrDoubleArbitraryLine',
-                        beforeDraw(chart, args, options) {
-                            const { ctx, chartArea: { top, right, bottom, left, width, height },
-                            scales: { x,y } } = chart;
-                            ctx.save()
-                            console.log(ctx)
-                            
-                            // Success 
-                            ctx.strokeStyle = 'red',
-                            ctx.strokeRect(left, y.getPixelForValue(3.5), width, 0);
-                            ctx.restore();
-                            // Danger 
-                            ctx.strokeStyle = 'blue',
-                            ctx.strokeRect(left, y.getPixelForValue(2), width, 0);
-                            ctx.restore();
-                        }
-                    }
-        
-        
-                const esrconfig = {
-        
-                    type: 'bar',
-                        data: esr,
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true
+                                        ],
+                                            borderColor: [
+                                            {% if profile.gender == "male" %}
+                                                {% if 0 <= p.esr and p.esr <= 10 %}'rgba(50, 255, 50, 1)' {%else%} 'rgba(255, 50, 50, 1)'{%endif%}
+                                            {%else%}
+                                                {% if 0 <= p.esr and p.esr <= 20 %}'rgba(50, 255, 50, 1)' {%else%} 'rgba(255, 50, 50, 1)'{%endif%}
+                                            {%endif%}
+
+                                        ],
+                                    borderWidth: 3
+                                }] 
+                            };
+
+                            // doubleArbitraryLine Plugin
+                            const esrDoubleArbitraryLine = {
+                                id: 'esrDoubleArbitraryLine',
+                                beforeDraw(chart, args, options) {
+                                    const { ctx, chartArea: { top, right, bottom, left, width, height },
+                                    scales: { x,y } } = chart;
+                                    ctx.save()
+                                    console.log(ctx)
+                                        
+                                    // Success 
+                                    ctx.strokeStyle = 'black',
+                                    ctx.setLineDash([4, 4]),
+                                    ctx.strokeRect(left, y.getPixelForValue({% if profile.gender == "male" %} 10 {%else%} 20 {% endif %}), width, 0);                   
+                                    ctx.restore();
+                                    // Danger 
+                                    ctx.strokeStyle = 'black',
+                                    ctx.setLineDash([4, 4]),
+                                    ctx.strokeRect(left, y.getPixelForValue({% if profile.gender == "male" %} 0 {%else%} 0 {% endif %}), width, 0);
+                                    ctx.restore();
+                                    }
                                 }
-                            }
-                        },     
-                        plugins: [esrDoubleArbitraryLine]
-                    };
+                    
+                    
+                            const esrconfig = {
+                    
+                                type: 'bar',
+                                    data: esr,
+                                    options: {
+                                        scales: {
+                                            y: {
+                                                min: 0,
+                                                max: {% if p.esr > 30 %} {{p.esr}} {%else%} 30 {% endif %},
+                                            }
+                                        }
+                                    },     
+                                    plugins: [esrDoubleArbitraryLine]
+                                };
 
-        
-                const esrChart = new Chart(
-                    document.getElementById('esrChart'),
-                    esrconfig
-                );
-            </script>
-          </div>
+                    
+                            const esrChart = new Chart(
+                                document.getElementById('esrChart'),
+                                esrconfig
+                            );
+                        </script>
+                    {%else%} <div align='center'>Value not Availabale<br>Check the corresponding report (Image)<div>{%endif%}{%endfor%}
+                </div>   
+            </div>
         </div>
-
-
-      </div>
     </section>
 
 </main>

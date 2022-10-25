@@ -37,7 +37,7 @@ def cbc_(request):
     
     check_values = request.POST.getlist('tag')
     check_values1 = request.POST.get('valu1')
-    print(check_values)
+    # print(check_values)
 
     if not check_values:
         pass
@@ -78,24 +78,57 @@ def cbc_(request):
                     
             pr3 = prof.differentialleukocytecount_set.all()
             for p in pr3:
-                if check_values1 == 'neutrophil %':
+                if check_values1 == 'neutrophil2':
                     data.append(p.neutrophil2)
                     date_.append(prof.testdate)
-                if check_values1 == 'lymphocyte2 %':
+                if check_values1 == 'lymphocyte2':
                     data.append(p.lymphocyte2)
                     date_.append(prof.testdate)
-                if check_values1 == 'monocyte2 %':
+                if check_values1 == 'monocyte2':
                     data.append(p.monocyte2)
                     date_.append(prof.testdate)
-                if check_values1 == 'eosinophil2 %':
+                if check_values1 == 'eosinophil2':
                     data.append(p.eosinophil2)
-                if check_values1 == 'basophil2 %':
+                    date_.append(prof.testdate)
+                if check_values1 == 'basophil2':
                     data.append(p.basophil2)
                     date_.append(prof.testdate)
+                    
+            pr4 = prof.redcellindices_set.all()
+            for p in pr4:
+                if check_values1 == 'pcv':
+                    data.append(p.pcv)
+                    date_.append(prof.testdate)
+                if check_values1 == 'mcv':
+                    data.append(p.mcv)
+                    date_.append(prof.testdate)
+                if check_values1 == 'mch':
+                    data.append(p.mch)
+                    date_.append(prof.testdate)
+                if check_values1 == 'mchc':
+                    data.append(p.mchc)
+                    date_.append(prof.testdate)
+                if check_values1 == 'rdw':
+                    data.append(p.rdw)
+                    date_.append(prof.testdate)
+            pr5 = prof.pltpanel_set.all()
+            for p in pr5:
+                if check_values1 == 'pct':
+                    data.append(p.pct)
+                    date_.append(prof.testdate)
+                if check_values1 == 'mpv':
+                    data.append(p.mpv)
+                    date_.append(prof.testdate)
+                if check_values1 == 'pdw':
+                    data.append(p.pdw)
+                    date_.append(prof.testdate)
+     
+            
    
             else:
                 pass
-    
+    # print(data)
+    # print(date_)
 
     context = {'pr1':pr1,'cbc_list':cbc_list,'profile': profile,'pr3':pr3,'check_values':check_values,'check_values1':check_values1,'data':data,'ref_val':ref_val,'date_':date_}
     return render(request, "blood_medical_report/cbc.html",context)
@@ -300,27 +333,27 @@ def bloodImage(request):
                     plt = []
                     hbg = []
                     if value.get("wbc") == None:
-                        wbc = 0
+                        wbc = -1
                     else:
                         wbc = value["wbc"]
                     
                     if value.get("rbc") == None:
-                        rbc = 0
+                        rbc = -1
                     else:
                         rbc = value["rbc"]          
 
                     if value.get("plt") == None:
-                        plt = 0
+                        plt = -1
                     else:
                         plt = value["plt"]
                             
                     if value.get("hbg") == None:
-                        hbg = 0
+                        hbg = -1
                     else:
                         hbg = value["hbg"]        
 
                     total_count = False   
-                    if wbc != 0 or rbc !=0 or plt !=0 or hbg != 0:
+                    if wbc != -1 or rbc !=-1 or plt !=-1 or hbg != -1:
                         obj = Totallcount(wbc=wbc,rbc=rbc,plt=plt,hbg=hbg)
                         obj.image_owner = request.user.profile                        
                         obj.imageid= instance
@@ -333,32 +366,32 @@ def bloodImage(request):
                     eosinophil = [] 
                     basophil = []
                     if value.get("neutrophil") == None:
-                        neutrophil = 0
+                        neutrophil = -1
                     else:
                         neutrophil = value["neutrophil"]
                     
                     if value.get("lymphocyte") == None:
-                        lymphocyte = 0
+                        lymphocyte = -1
                     else:
                         lymphocyte = value["lymphocyte"]
                     
                     if value.get("monocyte") == None:
-                        monocyte = 0
+                        monocyte = -1
                     else:
                         monocyte = value["monocyte"]
                     
                     if value.get("eosinophil") == None:
-                        eosinophil = 0
+                        eosinophil = -1
                     else:
                         eosinophil = value["eosinophil"]
                     
                     if value.get("basophil") == None:
-                        basophil = 0
+                        basophil = -1
                     else:
                         basophil = value["basophil"]
                     
                     abs_leuk_count = False
-                    if neutrophil != 0 or lymphocyte !=0 or monocyte !=0 or eosinophil != 0 or basophil != 0:
+                    if neutrophil != -1 or lymphocyte !=-1 or monocyte !=-1 or eosinophil != -1 or basophil != -1:
                         obj = Absoluteleukocytecount(neutrophil=neutrophil,lymphocyte=lymphocyte,monocyte=monocyte,eosinophil=eosinophil, basophil=basophil)
                         obj.image_owner = request.user.profile                        
                         obj.imageid= instance
@@ -371,32 +404,32 @@ def bloodImage(request):
                     eosinophil2 = [] 
                     basophil2 = []
                     if value.get("neutrophil%") == None:
-                        neutrophil2 = 0
+                        neutrophil2 = -1
                     else:
                         neutrophil2 = value["neutrophil%"]
                     
                     if value.get("lymphocyte%") == None:
-                        lymphocyte2 = 0
+                        lymphocyte2 = -1
                     else:
                         lymphocyte2 = value["lymphocyte%"]
                     
                     if value.get("monocyte%") == None:
-                        monocyte2 = 0
+                        monocyte2 = -1
                     else:
                         monocyte2 = value["monocyte%"]
                     
                     if value.get("eosinophil%") == None:
-                        eosinophil2 = 0
+                        eosinophil2 = -1
                     else:
                         eosinophil2 = value["eosinophil%"]
                     
                     if value.get("basophil%") == None:
-                        basophil2 = 0
+                        basophil2 = -1
                     else:
                         basophil2 = value["basophil%"]
                     
                     dif_leuk_count = False
-                    if neutrophil2 != 0 or lymphocyte2 !=0 or monocyte2 !=0 or eosinophil2 != 0 or basophil2 != 0:
+                    if neutrophil2 != -1 or lymphocyte2 !=-1 or monocyte2 !=-1 or eosinophil2 != -1 or basophil2 != -1:
                         obj = Differentialleukocytecount(neutrophil2=neutrophil2,lymphocyte2=lymphocyte2,monocyte2=monocyte2,eosinophil2=eosinophil2, basophil2=basophil2)
                         obj.image_owner = request.user.profile                        
                         obj.imageid= instance
@@ -410,32 +443,32 @@ def bloodImage(request):
                     mchc = [] 
                     rdw = []
                     if value.get("pcv") == None:
-                        pcv = 0
+                        pcv = -1
                     else:
                         pcv = value["pcv"]
                     
                     if value.get("mcv") == None:
-                        mcv = 0
+                        mcv = -1
                     else:
                         mcv = value["mcv"]
                     
                     if value.get("mch") == None:
-                        mch = 0
+                        mch = -1
                     else:
                         mch = value["mch"]
                     
                     if value.get("mchc") == None:
-                        mchc = 0
+                        mchc = -1
                     else:
                         mchc = value["mchc"]
                     
                     if value.get("rdw") == None:
-                        rdw = 0
+                        rdw = -1
                     else:
                         rdw = value["rdw"]
                     
                     redcellindices_count = False
-                    if pcv != 0 or mcv !=0 or mch !=0 or mchc != 0 or rdw != 0:
+                    if pcv != -1 or mcv !=-1 or mch !=-1 or mchc != -1 or rdw != -1:
                         obj = Redcellindices(pcv=pcv,mcv=mcv,mch=mch,mchc=mchc, rdw=rdw)
                         obj.image_owner = request.user.profile                        
                         obj.imageid= instance
@@ -447,22 +480,22 @@ def bloodImage(request):
                     mpv = []
                     pdw = []
                     if value.get("pct") == None:
-                        pct = 0
+                        pct = -1
                     else:
                         pct = value["pct"]
                     
                     if value.get("mpv") == None:
-                        mpv = 0
+                        mpv = -1
                     else:
                         mpv = value["mpv"]
                     
                     if value.get("pdw") == None:
-                        pdw = 0
+                        pdw = -1
                     else:
                         pdw = value["pdw"]
                     
                     pltpanel_count = False
-                    if pct != 0 or mpv !=0 or pdw != 0:
+                    if pct != -1 or mpv !=-1 or pdw != -1:
                         obj = Pltpanel(pct=pct,mpv=mpv,pdw=pdw)
                         obj.image_owner = request.user.profile                        
                         obj.imageid= instance
@@ -472,13 +505,13 @@ def bloodImage(request):
                     esr = []
                     
                     if value.get("esr") == None:
-                        esr = 0
+                        esr = -1
                     else:
                         esr = value["esr"]
                     
                     esr_count = False
                     # print(value)
-                    if esr != 0:
+                    if esr != -1:
                         # print(esr)
                         obj = Esrcount( esr=esr )
                         obj.image_owner = request.user.profile
@@ -490,13 +523,13 @@ def bloodImage(request):
                     hba1c = []
                     
                     if value.get("hba1c") == None:
-                        hba1c = 0
+                        hba1c = -1
                     else:
                         hba1c = value["hba1c"]
                     
                     hba1c_count = False
                     # print(value)
-                    if hba1c != 0:
+                    if hba1c != -1:
                         # print(esr)
                         obj = Hba1c( hba1c=hba1c )
                         obj.image_owner = request.user.profile

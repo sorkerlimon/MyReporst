@@ -1,7 +1,8 @@
 {% load static %}
 {% load notifications_tags %}
+{% comment %} {% static 'assets/img/myreports.png' %} {% endcomment %}
 <header id="header" class="header fixed-top d-flex align-items-center">
-  <div class="d-flex align-items-center justify-content-between"> <a href="{% url 'dashboard' %}" class="logo d-flex align-items-center"> <img src=" {% static 'assets/img/myreports.png' %} " alt=""> <span class="d-none d-lg-block">MyReports</span> </a> <i class="bi bi-list toggle-sidebar-btn"></i></div>
+  <div class="d-flex align-items-center justify-content-between"> <a href="{% url 'dashboard' %}" class="logo d-flex align-items-center"> <img src="  " alt=""> <span class="d-none d-lg-block">MyReports</span> </a> <i class="bi bi-list toggle-sidebar-btn"></i></div>
   <div class="search-bar">
      <form class="search-form d-flex align-items-center" id='searchForm' action="{% url 'paitent' %}" method="get"> <input type="search" name="search_query" placeholder="Search By ID" title="Enter search keyword"> <button type="submit" title="Search"><i class="bi bi-search"></i></button></form>
   </div>
@@ -67,7 +68,7 @@
      </li>
 
      <li class="nav-item">
-      <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#"> <i class="bi bi-images"></i><span>Gallery</span><i class="bi bi-chevron-down ms-auto"></i> </a>
+      <a class="nav-link collapsed" data-bs-target="#forms-nav" data-bs-toggle="collapse" href="#"> <i class="bi bi-images"></i><span>Reports Gallery</span><i class="bi bi-chevron-down ms-auto"></i> </a>
       <ul id="forms-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
          <li> <a href="{% url 'cbcimage' %}"> <i class="bi bi-circle"></i><span>CBC</span> </a></li>
          <li> <a href="{% url 'esrimage' %}"> <i class="bi bi-circle"></i><span>ESR</span> </a></li>
